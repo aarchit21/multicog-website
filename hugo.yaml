@@ -1,0 +1,46 @@
+baseURL: "/"
+locale: "en-us"
+title: "MultiCOG"
+enableRobotsTXT: true
+summaryLength: 28
+
+params:
+  description: "Draft research-group website for MultiCOG at BITS Pilani."
+  affiliation: "BITS Pilani"
+  contact_email: "pratik.narang@pilani.bits-pilani.ac.in"
+  placeholder_notice: "Draft placeholder - confirm with faculty supervisor."
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+menus:
+  main:
+    - name: "Home"
+      pageRef: "/"
+      weight: 10
+    - name: "Research"
+      pageRef: "/research"
+      weight: 20
+    - name: "Projects"
+      pageRef: "/project"
+      weight: 30
+    - name: "Publications"
+      pageRef: "/publication"
+      weight: 40
+    - name: "People"
+      pageRef: "/authors"
+      weight: 50
+    - name: "Collaborations"
+      pageRef: "/collaboration"
+      weight: 60
+    - name: "Demos"
+      pageRef: "/demo"
+      weight: 70
+    - name: "News"
+      pageRef: "/news"
+      weight: 80
+    - name: "Contact"
+      pageRef: "/contact"
+      weight: 90

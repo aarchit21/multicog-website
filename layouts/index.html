@@ -1,0 +1,152 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Research group draft</p>
+    <h1>MultiCOG</h1>
+    <p class="subtitle">Artificial Intelligence Research at BITS Pilani</p>
+    <p class="draft-note">Draft placeholder - this description is for faculty confirmation. MultiCOG is presented here as a research group exploring artificial intelligence, machine learning, and applied AI systems across language, vision, security, and health-facing problems.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="/research/">Explore Research</a>
+      <a class="button secondary" href="/publication/">View Publications</a>
+    </div>
+  </div>
+  <div class="hero-visual" aria-label="Abstract AI research workflow illustration">
+    <div class="visual-grid" aria-hidden="true"></div>
+    <div class="signal-card top"><span>Input</span><strong>Reviews</strong></div>
+    <div class="signal-card mid"><span>AI layer</span><strong>Models</strong></div>
+    <div class="signal-card low"><span>Outcome</span><strong>Actions</strong></div>
+    <div class="orbit one"></div>
+    <div class="orbit two"></div>
+    <div class="metric-chip chip-one">NLP</div>
+    <div class="metric-chip chip-two">Vision</div>
+    <div class="metric-chip chip-three">Security</div>
+  </div>
+</section>
+
+{{ $research := where site.RegularPages "Section" "research" }}
+{{ $projects := first 3 (where site.RegularPages "Section" "project") }}
+{{ $publications := first 3 (where site.RegularPages "Section" "publication") }}
+{{ $authors := first 4 (where site.RegularPages "Section" "authors") }}
+{{ $collabs := first 3 (where site.RegularPages "Section" "collaboration") }}
+{{ $demos := first 3 (where site.RegularPages "Section" "demo") }}
+{{ $news := first 3 (where site.RegularPages "Section" "news") }}
+
+<section class="section-band">
+  <div class="section-head">
+    <p class="eyebrow">Draft themes</p>
+    <h2>Research Areas</h2>
+  </div>
+  <div class="card-grid three">
+    {{ range $research }}
+      <article class="card">
+        <p class="tag">Draft theme</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Params.summary }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+<section class="section-band accent">
+  <div class="section-head">
+    <p class="eyebrow">Ongoing only</p>
+    <h2>Featured Projects</h2>
+  </div>
+  <div class="card-grid three">
+    {{ range $projects }}
+      <article class="card project-card">
+        <p class="tag">Ongoing project</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <dl class="card-facts">
+          <div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div>
+          <div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div>
+        </dl>
+        <p>{{ .Params.summary }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+<section class="section-band">
+  <div class="section-head">
+    <p class="eyebrow">BirdEye AI Lab</p>
+    <h2>Featured Papers</h2>
+  </div>
+  <div class="card-grid three">
+    {{ range $publications }}
+      <article class="card paper-card">
+        <div class="figure-placeholder" role="img" aria-label="Figure placeholder - replace with approved paper figure">
+          <span>Figure placeholder</span>
+          <i></i><i></i><i></i>
+        </div>
+        <p class="tag">{{ .Params.venue }}</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Params.summary }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+<section class="section-band split">
+  <div>
+    <div class="section-head">
+      <p class="eyebrow">Demo placeholders</p>
+      <h2>Demo Videos</h2>
+    </div>
+    <div class="stack">
+      {{ range $demos }}
+        <article class="mini-card demo-mini">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p>{{ .Params.summary }}</p>
+        </article>
+      {{ end }}
+    </div>
+  </div>
+  <div>
+    <div class="section-head">
+      <p class="eyebrow">People preview</p>
+      <h2>Group</h2>
+    </div>
+    <div class="stack">
+      {{ range $authors }}
+        <article class="mini-card person-mini">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p>{{ .Params.role }}</p>
+        </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="section-band accent">
+  <div class="section-head">
+    <p class="eyebrow">Collaborators and agencies</p>
+    <h2>Collaboration Areas</h2>
+  </div>
+  <div class="card-grid three">
+    {{ range $collabs }}
+      <article class="card">
+        <p class="tag">{{ .Params.partner_type }}</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Params.summary }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+<section class="section-band">
+  <div class="section-head">
+    <p class="eyebrow">Recent news</p>
+    <h2>Updates</h2>
+  </div>
+  <div class="stack">
+    {{ range $news }}
+      <article class="mini-card">
+        <p class="meta">{{ .Date.Format "Jan 2, 2006" }}</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Summary }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

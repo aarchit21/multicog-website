@@ -1,0 +1,96 @@
+{{ define "main" }}
+<section class="page-hero">
+  <p class="eyebrow">{{ .Section | humanize }}</p>
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.description }}<p>{{ . }}</p>{{ end }}
+</section>
+
+<section class="section-band">
+  {{ with .Content }}
+    <div class="content-body">
+      {{ . }}
+    </div>
+  {{ end }}
+
+  {{ if eq .Section "publication" }}
+    <div class="card-grid two">
+      {{ range .Pages.ByWeight }}
+        <article class="card paper-card">
+          <div class="figure-placeholder" role="img" aria-label="Figure placeholder - replace with approved paper figure">
+            <span>Figure placeholder</span>
+            <i></i><i></i><i></i>
+          </div>
+          <p class="tag">{{ .Params.venue }}</p>
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <p>{{ .Params.summary }}</p>
+          <p class="meta">{{ delimit .Params.authors ", " }}</p>
+        </article>
+      {{ end }}
+    </div>
+  {{ else if eq .Section "authors" }}
+    {{ $groups := slice "Faculty" "Current researchers" "Alumni" "Collaborators" }}
+    {{ range $groups }}
+      {{ $group := . }}
+      {{ $people := where $.Pages.ByWeight "Params.category" $group }}
+      {{ if $people }}
+        <div class="section-head compact"><h2>{{ $group }}</h2></div>
+        <div class="card-grid three people-grid">
+          {{ range $people }}
+            <article class="card person-card">
+              <div class="avatar-placeholder" role="img" aria-label="Portrait placeholder for {{ .Title }}">{{ substr .Title 0 1 }}</div>
+              <p class="tag">{{ .Params.status_label }}</p>
+              <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+              <p class="meta">{{ .Params.role }}</p>
+              <p>{{ .Params.summary }}</p>
+            </article>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ end }}
+  {{ else if eq .Section "project" }}
+    {{ if .Pages }}
+      <div class="card-grid three project-grid">
+        {{ range .Pages.ByWeight }}
+          <article class="card project-card">
+            <p class="tag">{{ with .Params.status_label }}{{ . }}{{ else }}Ongoing project{{ end }}</p>
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            <dl class="card-facts">
+              <div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div>
+              <div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div>
+            </dl>
+            <p>{{ .Params.summary }}</p>
+          </article>
+        {{ end }}
+      </div>
+    {{ end }}
+  {{ else if eq .Section "demo" }}
+    {{ if .Pages }}
+      <div class="card-grid three">
+        {{ range .Pages.ByWeight }}
+          <article class="card demo-card">
+            <div class="video-placeholder compact" role="img" aria-label="Video thumbnail placeholder">
+              <span>Video placeholder</span>
+            </div>
+            <p class="tag">{{ with .Params.status_label }}{{ . }}{{ else }}Placeholder{{ end }}</p>
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            <p>{{ .Params.summary }}</p>
+          </article>
+        {{ end }}
+      </div>
+    {{ end }}
+  {{ else }}
+    {{ if .Pages }}
+      <div class="card-grid three">
+        {{ range .Pages.ByWeight }}
+          <article class="card">
+            <p class="tag">{{ with .Params.status_label }}{{ . }}{{ else }}Draft placeholder{{ end }}</p>
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+            {{ with .Params.duration }}<p class="meta">{{ . }}</p>{{ end }}
+          </article>
+        {{ end }}
+      </div>
+    {{ end }}
+  {{ end }}
+</section>
+{{ end }}

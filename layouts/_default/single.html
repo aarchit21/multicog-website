@@ -1,0 +1,68 @@
+{{ define "main" }}
+<article class="single">
+  <header class="single-header">
+    <p class="eyebrow">{{ .Section | humanize }}</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
+  </header>
+
+  {{ if eq .Section "project" }}
+    <dl class="facts">
+      <div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div>
+      <div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div>
+    </dl>
+    <p class="draft-note">Draft placeholder - project description requires faculty confirmation.</p>
+  {{ end }}
+
+  {{ if eq .Section "publication" }}
+    <div class="figure-placeholder large" role="img" aria-label="Figure placeholder - replace with approved paper figure">
+      <span>Figure placeholder - replace with approved paper figure.</span>
+      <i></i><i></i><i></i>
+    </div>
+    <dl class="facts">
+      <div><dt>Venue</dt><dd>{{ .Params.venue }}</dd></div>
+      <div><dt>Year</dt><dd>{{ .Params.year }}</dd></div>
+      <div><dt>Authors</dt><dd>{{ delimit .Params.authors ", " }}</dd></div>
+      <div><dt>Associated project</dt><dd>{{ .Params.associated_project }}</dd></div>
+    </dl>
+    <div class="button-row" aria-label="Publication assets">
+      <button disabled>Paper placeholder</button>
+      <button disabled>DOI placeholder</button>
+      <button disabled>Code placeholder</button>
+      <button disabled>Dataset placeholder</button>
+      <button disabled>BibTeX placeholder</button>
+      <button disabled>Demo video placeholder</button>
+    </div>
+  {{ end }}
+
+  {{ if eq .Section "authors" }}
+    <div class="profile-layout">
+      <div class="avatar-placeholder large" role="img" aria-label="Portrait placeholder for {{ .Title }}">{{ substr .Title 0 1 }}</div>
+      <dl class="facts">
+        <div><dt>Role</dt><dd>{{ .Params.role }}</dd></div>
+        <div><dt>Research interests</dt><dd>{{ delimit .Params.interests ", " }}</dd></div>
+        <div><dt>Email</dt><dd>{{ with .Params.email }}<a href="mailto:{{ . }}">{{ . }}</a>{{ else }}Placeholder{{ end }}</dd></div>
+        <div><dt>Google Scholar</dt><dd>{{ .Params.google_scholar }}</dd></div>
+        <div><dt>GitHub</dt><dd>{{ .Params.github }}</dd></div>
+        <div><dt>LinkedIn</dt><dd>{{ .Params.linkedin }}</dd></div>
+        <div><dt>Website</dt><dd>{{ .Params.website }}</dd></div>
+      </dl>
+    </div>
+  {{ end }}
+
+  {{ if eq .Section "demo" }}
+    <div class="video-placeholder" role="img" aria-label="Video thumbnail placeholder">
+      <span>Video thumbnail placeholder</span>
+    </div>
+    <dl class="facts">
+      <div><dt>Associated item</dt><dd>{{ .Params.associated_item }}</dd></div>
+      <div><dt>Video link</dt><dd>Placeholder - add approved YouTube embed or external link.</dd></div>
+      <div><dt>Code link</dt><dd>Placeholder - add approved repository link.</dd></div>
+    </dl>
+  {{ end }}
+
+  <div class="content-body">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

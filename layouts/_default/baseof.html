@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="{{ .Site.Language.Locale | default "en" }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if .IsHome }}{{ .Site.Title }} | Artificial Intelligence Research at BITS Pilani{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
+    <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Primary navigation">
+        <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="MultiCOG home">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <span>
+            <strong>MultiCOG</strong>
+            <small>BITS Pilani</small>
+          </span>
+        </a>
+        <details class="nav-menu">
+          <summary class="nav-button">Menu</summary>
+          <div class="nav-links">
+            {{ range .Site.Menus.main }}
+              <a href="{{ .URL }}">{{ .Name }}</a>
+            {{ end }}
+          </div>
+        </details>
+      </nav>
+    </header>
+    <main id="main">
+      {{ block "main" . }}{{ end }}
+    </main>
+    <footer class="site-footer">
+      <div>
+        <strong>MultiCOG</strong>
+        <p>Draft research-group website for faculty review. Institutional affiliation: BITS Pilani.</p>
+      </div>
+      <div>
+        <p>Contact placeholder: <a href="mailto:{{ .Site.Params.contact_email }}">{{ .Site.Params.contact_email }}</a></p>
+        <p>All draft placeholders should be replaced only after confirmation.</p>
+      </div>
+    </footer>
+  </body>
+</html>
