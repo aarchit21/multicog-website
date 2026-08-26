@@ -1,4 +1,4 @@
-baseURL: "/"
+baseURL: "https://<your-github-username>.github.io/<your-repo-name>/"
 locale: "en-us"
 title: "MultiCOG"
 enableRobotsTXT: true
