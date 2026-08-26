@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Projects on MultiCOG</title>
+		<link>//localhost:1313/project/</link>
+		<description>Recent content in Projects on MultiCOG</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<atom:link href="//localhost:1313/project/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Leveraging Artificial Intelligence and Machine Learning for Effective Investigation and Improvement of Conviction Rate</title>
+				<link>//localhost:1313/project/ai-ml-investigation-conviction-rate/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/project/ai-ml-investigation-conviction-rate/</guid>
+				<description>Draft placeholder - detailed public description requires faculty confirmation.</description>
+			</item>
+			<item>
+				<title>Toward Resilient IoT: Federated Learning with Generative AI Security Agents</title>
+				<link>//localhost:1313/project/resilient-iot-federated-learning-generative-ai-security-agents/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/project/resilient-iot-federated-learning-generative-ai-security-agents/</guid>
+				<description>Draft placeholder - detailed public description requires faculty confirmation.</description>
+			</item>
+			<item>
+				<title>Sentiment-based Business Recommendations using Large Language Models</title>
+				<link>//localhost:1313/project/sentiment-business-recommendations-llms/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/project/sentiment-business-recommendations-llms/</guid>
+				<description>Draft placeholder - detailed public description requires faculty confirmation.</description>
+			</item>
+	</channel>
+</rss>

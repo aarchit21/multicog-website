@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>MultiCOG</title>
+		<link>//localhost:1313/</link>
+		<description>Recent content on MultiCOG</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Wed, 26 Aug 2026 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Three papers from the BirdEye AI Lab accepted at EMNLP and PRICAI 2026</title>
+				<link>//localhost:1313/news/birdeye-papers-emnlp-pricai-2026/</link>
+				<pubDate>Wed, 26 Aug 2026 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/news/birdeye-papers-emnlp-pricai-2026/</guid>
+				<description>The papers address pragmatic-form bias in suggestion mining, cost-efficient LLM processing and the transformation of customer reviews into actionable business recommendations.</description>
+			</item>
+			<item>
+				<title>BirdEye AI Lab</title>
+				<link>//localhost:1313/collaboration/birdeye-ai-lab/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/collaboration/birdeye-ai-lab/</guid>
+				<description>Draft collaboration section focused on enterprise feedback analytics, suggestion mining, cost-efficient LLM inference, and actionable business recommendations.</description>
+			</item>
+			<item>
+				<title>Enterprise Feedback Analytics</title>
+				<link>//localhost:1313/research/enterprise-feedback-analytics/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/research/enterprise-feedback-analytics/</guid>
+				<description>Draft theme for mining customer feedback, extracting suggestions, and converting review text into actionable business-facing insights.</description>
+			</item>
+			<item>
+				<title>Leveraging Artificial Intelligence and Machine Learning for Effective Investigation and Improvement of Conviction Rate</title>
+				<link>//localhost:1313/project/ai-ml-investigation-conviction-rate/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/project/ai-ml-investigation-conviction-rate/</guid>
+				<description>Draft placeholder - detailed public description requires faculty confirmation.</description>
+			</item>
+			<item>
+				<title>PRAXIS: A 68-Industry Benchmark for Pragmatic-Form Bias in Suggestion Mining</title>
+				<link>//localhost:1313/publication/praxis/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/publication/praxis/</guid>
+				<description>PRAXIS studies how suggestions are expressed through diverse pragmatic forms and introduces a benchmark spanning 68 industries to evaluate and reduce pragmatic-form bias in suggestion-mining systems.</description>
+			</item>
+			<item>
+				<title>Prof. Pratik Narang</title>
+				<link>//localhost:1313/authors/pratik-narang/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/authors/pratik-narang/</guid>
+				<description>IEEE Senior Member. His work applies artificial intelligence and machine learning in cybersecurity, computer vision and healthcare. This short profile is intentionally limited for the first draft.</description>
+			</item>
+			<item>
+				<title>Suggestion Mining Demo Placeholder</title>
+				<link>//localhost:1313/demo/suggestion-mining-demo-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/demo/suggestion-mining-demo-placeholder/</guid>
+				<description>Placeholder demo card for a future video or external demo related to suggestion mining.</description>
+			</item>
+			<item>
+				<title>Agency Collaboration Placeholder</title>
+				<link>//localhost:1313/collaboration/agency-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/collaboration/agency-placeholder/</guid>
+				<description>Draft placeholder for future confirmed agency collaboration details.</description>
+			</item>
+			<item>
+				<title>Certified Cost-Optimal Triage for Suggestion Detection in Reviews</title>
+				<link>//localhost:1313/publication/certified-cost-optimal-triage/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/publication/certified-cost-optimal-triage/</guid>
+				<description>This work introduces a certified triage framework for routing review text efficiently, reducing LLM inference costs while maintaining high precision in actionable suggestion detection.</description>
+			</item>
+			<item>
+				<title>Cost-Aware Triage Demo Placeholder</title>
+				<link>//localhost:1313/demo/triage-demo-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/demo/triage-demo-placeholder/</guid>
+				<description>Placeholder demo card for a future video or external demo related to cost-aware LLM routing.</description>
+			</item>
+			<item>
+				<title>Current Researcher Placeholder</title>
+				<link>//localhost:1313/authors/current-researcher-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/authors/current-researcher-placeholder/</guid>
+				<description>Clearly labelled placeholder for a future current researcher profile.</description>
+			</item>
+			<item>
+				<title>Natural-Language Processing</title>
+				<link>//localhost:1313/research/natural-language-processing/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/research/natural-language-processing/</guid>
+				<description>Draft theme for language understanding, suggestion mining, review analysis, and LLM-assisted decision support.</description>
+			</item>
+			<item>
+				<title>Toward Resilient IoT: Federated Learning with Generative AI Security Agents</title>
+				<link>//localhost:1313/project/resilient-iot-federated-learning-generative-ai-security-agents/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/project/resilient-iot-federated-learning-generative-ai-security-agents/</guid>
+				<description>Draft placeholder - detailed public description requires faculty confirmation.</description>
+			</item>
+			<item>
+				<title>Alumni Placeholder</title>
+				<link>//localhost:1313/authors/alumni-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/authors/alumni-placeholder/</guid>
+				<description>Clearly labelled placeholder for a future alumni profile.</description>
+			</item>
+			<item>
+				<title>ReviewSense Demo Placeholder</title>
+				<link>//localhost:1313/demo/reviewsense-demo-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/demo/reviewsense-demo-placeholder/</guid>
+				<description>Placeholder demo card for a future video or external demo related to review-to-recommendation workflows.</description>
+			</item>
+			<item>
+				<title>ReviewSense: Transforming Customer Review Dynamics into Actionable Business Insights</title>
+				<link>//localhost:1313/publication/reviewsense/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/publication/reviewsense/</guid>
+				<description>ReviewSense combines clustering, LLM adaptation and expert evaluation to convert unstructured customer reviews into targeted, business-facing recommendations.</description>
+			</item>
+			<item>
+				<title>Sentiment-based Business Recommendations using Large Language Models</title>
+				<link>//localhost:1313/project/sentiment-business-recommendations-llms/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/project/sentiment-business-recommendations-llms/</guid>
+				<description>Draft placeholder - detailed public description requires faculty confirmation.</description>
+			</item>
+			<item>
+				<title>Trustworthy And Cost-Efficient AI</title>
+				<link>//localhost:1313/research/trustworthy-cost-efficient-ai/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/research/trustworthy-cost-efficient-ai/</guid>
+				<description>Draft theme for reliable, efficient, and practical AI systems, including cost-aware LLM routing and evaluation.</description>
+			</item>
+			<item>
+				<title>Collaborator Placeholder</title>
+				<link>//localhost:1313/authors/collaborator-placeholder/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/authors/collaborator-placeholder/</guid>
+				<description>Clearly labelled placeholder for a future collaborator profile.</description>
+			</item>
+			<item>
+				<title>Computer Vision</title>
+				<link>//localhost:1313/research/computer-vision/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/research/computer-vision/</guid>
+				<description>Draft theme for visual intelligence and applied machine-learning systems involving images or video.</description>
+			</item>
+			<item>
+				<title>Cybersecurity</title>
+				<link>//localhost:1313/research/cybersecurity/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/research/cybersecurity/</guid>
+				<description>Draft theme for applying AI and machine learning to security, resilience, and investigation-facing systems.</description>
+			</item>
+			<item>
+				<title>AI For Healthcare</title>
+				<link>//localhost:1313/research/ai-for-healthcare/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/research/ai-for-healthcare/</guid>
+				<description>Draft theme for AI and machine-learning methods in healthcare-facing applications.</description>
+			</item>
+	</channel>
+</rss>

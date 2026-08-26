@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>News on MultiCOG</title>
+		<link>//localhost:1313/news/</link>
+		<description>Recent content in News on MultiCOG</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Wed, 26 Aug 2026 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="//localhost:1313/news/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Three papers from the BirdEye AI Lab accepted at EMNLP and PRICAI 2026</title>
+				<link>//localhost:1313/news/birdeye-papers-emnlp-pricai-2026/</link>
+				<pubDate>Wed, 26 Aug 2026 00:00:00 +0000</pubDate>
+				<guid>//localhost:1313/news/birdeye-papers-emnlp-pricai-2026/</guid>
+				<description>The papers address pragmatic-form bias in suggestion mining, cost-efficient LLM processing and the transformation of customer reviews into actionable business recommendations.</description>
+			</item>
+	</channel>
+</rss>
