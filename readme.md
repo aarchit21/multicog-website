@@ -52,4 +52,4 @@ Create or edit a bundle in `content/demo/`. Add a YouTube embed or external vide
 
 ## Later Deployment
 
-For GitHub Pages or Cloudflare Pages, push the repository to GitHub and configure the build command as `hugo --minify` with output directory `public`. Add any platform-specific base URL or build environment settings after the hosting target is chosen.
+For GitHub Pages, set the repository's Pages source to **GitHub Actions**. The included workflow builds with the Pages-provided base URL, so it works for the project URL `https://aarchit21.github.io/multicog-website/` without hard-coding a placeholder. The generated `public/` directory is intentionally ignored.
