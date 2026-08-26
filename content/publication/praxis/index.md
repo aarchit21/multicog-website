@@ -4,15 +4,21 @@ weight: 10
 venue: "EMNLP Findings"
 year: "2026"
 authors:
-  - "Aniket Upadhyay"
-  - "Aakash Trivedi"
-  - "Sparsh Bajoria"
-  - "Shreyanshu Ranjan"
-  - "Dhruv Kumar"
-  - "Pratik Narang"
-associated_project: "Sentiment-based Business Recommendations using Large Language Models"
+  - name: "Aniket Upadhyay"
+  - name: "Aakash Trivedi"
+  - name: "Sparsh Bajoria"
+  - name: "Shreyanshu Ranjan"
+  - name: "Dhruv Kumar"
+  - name: "Pratik Narang"
+    slug: "pratik-narang"
+project: "sentiment-business-recommendations-llms"
+research_areas:
+  - "enterprise-feedback-analytics"
+  - "natural-language-processing"
+collaboration: "birdeye-ai-lab"
+publication_type: "Conference paper"
 summary: "PRAXIS studies how suggestions are expressed through diverse pragmatic forms and introduces a benchmark spanning 68 industries to evaluate and reduce pragmatic-form bias in suggestion-mining systems."
 status_label: "Featured paper"
 ---
 
-Asset placeholders are intentionally disabled until approved paper, DOI, code, dataset, BibTeX, demo video, and figure assets are supplied.
+This summary is an initial draft. Publication resources and a representative figure will be added after approval.

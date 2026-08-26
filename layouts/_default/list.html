@@ -1,96 +1,52 @@
 {{ define "main" }}
-<section class="page-hero">
-  <p class="eyebrow">{{ .Section | humanize }}</p>
-  <h1>{{ .Title }}</h1>
-  {{ with .Params.description }}<p>{{ . }}</p>{{ end }}
-</section>
+<header class="page-intro"><p class="kicker">{{ .Section | humanize }}</p><h1>{{ .Title }}</h1>{{ with .Params.description }}<p>{{ . }}</p>{{ end }}</header>
 
-<section class="section-band">
-  {{ with .Content }}
-    <div class="content-body">
-      {{ . }}
-    </div>
-  {{ end }}
-
-  {{ if eq .Section "publication" }}
-    <div class="card-grid two">
+{{ if eq .Section "publication" }}
+  {{ $pages := .Pages }}
+  <section class="content-section publications-index" data-publications>
+    <form class="filter-bar" data-publication-filters aria-label="Filter publications">
+      <label class="search-control"><span>Search publications</span><input type="search" name="q" placeholder="Title, author, or keyword" autocomplete="off"></label>
+      <label><span>Year</span><select name="year"><option value="">All years</option>{{ range $pages.GroupByParam "year" }}<option value="{{ .Key }}">{{ .Key }}</option>{{ end }}</select></label>
+      <label><span>Venue / type</span><select name="venue"><option value="">All venues</option>{{ range $pages }}<option value="{{ .Params.venue }}">{{ .Params.venue }}</option>{{ end }}</select></label>
+      <label><span>Research area</span><select name="area"><option value="">All areas</option>{{ range where site.RegularPages "Section" "research" }}<option value="{{ .File.ContentBaseName }}">{{ .Title }}</option>{{ end }}</select></label>
+      <label><span>Author</span><input type="search" name="author" placeholder="Any author" autocomplete="off"></label>
+      <button class="view-toggle" type="button" data-view-toggle aria-pressed="false">Visual view</button>
+    </form>
+    <p class="result-count" data-result-count aria-live="polite">{{ len $pages }} publications</p>
+    <div class="empty-state" data-empty-state hidden><h2>No publications match these filters.</h2><p>Try clearing a filter or searching with fewer terms.</p></div>
+    {{ range sort ($pages.GroupByParam "year") "Key" "desc" }}
+      <section class="publication-year" data-publication-year="{{ .Key }}"><h2>{{ .Key }}</h2><div class="publication-list" data-publication-list>
       {{ range .Pages.ByWeight }}
-        <article class="card paper-card">
-          <div class="figure-placeholder" role="img" aria-label="Figure placeholder - replace with approved paper figure">
-            <span>Figure placeholder</span>
-            <i></i><i></i><i></i>
-          </div>
-          <p class="tag">{{ .Params.venue }}</p>
-          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-          <p>{{ .Params.summary }}</p>
-          <p class="meta">{{ delimit .Params.authors ", " }}</p>
+        {{ $areas := delimit .Params.research_areas " " }}{{ $authorNames := slice }}{{ range .Params.authors }}{{ $authorNames = $authorNames | append .name }}{{ end }}
+        <article class="publication-row filterable" data-year="{{ .Params.year }}" data-venue="{{ .Params.venue }}" data-area="{{ $areas }}" data-author="{{ delimit $authorNames " " }}" data-search="{{ lower (printf "%s %s %s %s" .Title .Params.summary .Params.venue (delimit $authorNames " ")) }}">
+          <p class="pub-year">{{ .Params.publication_type }}</p><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p class="authors">{{ range $index, $author := .Params.authors }}{{ if $index }}, {{ end }}{{ if $author.slug }}<a href="/authors/{{ $author.slug }}/">{{ $author.name }}</a>{{ else }}{{ $author.name }}{{ end }}{{ end }}</p><p class="venue">{{ .Params.venue }} · {{ .Params.year }}</p><p class="pub-summary">{{ .Params.summary }}</p></div>
         </article>
-      {{ end }}
-    </div>
-  {{ else if eq .Section "authors" }}
-    {{ $groups := slice "Faculty" "Current researchers" "Alumni" "Collaborators" }}
-    {{ range $groups }}
-      {{ $group := . }}
-      {{ $people := where $.Pages.ByWeight "Params.category" $group }}
-      {{ if $people }}
-        <div class="section-head compact"><h2>{{ $group }}</h2></div>
-        <div class="card-grid three people-grid">
-          {{ range $people }}
-            <article class="card person-card">
-              <div class="avatar-placeholder" role="img" aria-label="Portrait placeholder for {{ .Title }}">{{ substr .Title 0 1 }}</div>
-              <p class="tag">{{ .Params.status_label }}</p>
-              <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-              <p class="meta">{{ .Params.role }}</p>
-              <p>{{ .Params.summary }}</p>
-            </article>
-          {{ end }}
-        </div>
-      {{ end }}
+      {{ end }}</div></section>
     {{ end }}
-  {{ else if eq .Section "project" }}
-    {{ if .Pages }}
-      <div class="card-grid three project-grid">
-        {{ range .Pages.ByWeight }}
-          <article class="card project-card">
-            <p class="tag">{{ with .Params.status_label }}{{ . }}{{ else }}Ongoing project{{ end }}</p>
-            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-            <dl class="card-facts">
-              <div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div>
-              <div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div>
-            </dl>
-            <p>{{ .Params.summary }}</p>
-          </article>
-        {{ end }}
-      </div>
+  </section>
+
+{{ else if eq .Section "research" }}
+  <section class="research-overview">
+    {{ range .Pages.ByWeight }}
+      {{ $slug := .File.ContentBaseName }}{{ $projects := where (where site.RegularPages "Section" "project") "Params.research_areas" "intersect" (slice $slug) }}{{ $papers := where (where site.RegularPages "Section" "publication") "Params.research_areas" "intersect" (slice $slug) }}
+      <article class="research-area"><div class="research-area-intro"><p class="area-number">{{ printf "%02d" .Weight }}</p><div><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>{{ .Params.summary }}</p></div></div><div class="relationship-columns"><div><h3>Ongoing projects</h3>{{ if $projects }}<ul>{{ range $projects }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul>{{ else }}<p>Project relationships pending confirmation.</p>{{ end }}</div><div><h3>Publications</h3>{{ if $papers }}<ul>{{ range $papers }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul>{{ else }}<p>Publication relationships pending confirmation.</p>{{ end }}</div><div><h3>People & demos</h3><p><a href="/authors/pratik-narang/">Prof. Pratik Narang</a> is the confirmed faculty profile. Demonstrations await approval.</p></div></div></article>
     {{ end }}
-  {{ else if eq .Section "demo" }}
-    {{ if .Pages }}
-      <div class="card-grid three">
-        {{ range .Pages.ByWeight }}
-          <article class="card demo-card">
-            <div class="video-placeholder compact" role="img" aria-label="Video thumbnail placeholder">
-              <span>Video placeholder</span>
-            </div>
-            <p class="tag">{{ with .Params.status_label }}{{ . }}{{ else }}Placeholder{{ end }}</p>
-            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-            <p>{{ .Params.summary }}</p>
-          </article>
-        {{ end }}
-      </div>
-    {{ end }}
-  {{ else }}
-    {{ if .Pages }}
-      <div class="card-grid three">
-        {{ range .Pages.ByWeight }}
-          <article class="card">
-            <p class="tag">{{ with .Params.status_label }}{{ . }}{{ else }}Draft placeholder{{ end }}</p>
-            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-            <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
-            {{ with .Params.duration }}<p class="meta">{{ . }}</p>{{ end }}
-          </article>
-        {{ end }}
-      </div>
-    {{ end }}
-  {{ end }}
-</section>
+  </section>
+
+{{ else if eq .Section "project" }}
+  <section class="content-section project-list">{{ range .Pages.ByWeight }}<article class="project-row"><div><p class="kicker">Ongoing project</p><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>Public description is provisional pending faculty confirmation.</p></div><dl><div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div><div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div></dl></article>{{ end }}</section>
+
+{{ else if eq .Section "authors" }}
+  <section class="content-section directory"><div class="directory-group"><h2>Faculty</h2>{{ range where .Pages "Params.category" "Faculty" }}<article class="faculty-preview full"><div class="monogram" aria-hidden="true">PN</div><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Params.role }}</p><p>{{ .Params.summary }}</p><a class="text-link" href="{{ .RelPermalink }}">View profile <span aria-hidden="true">→</span></a></div></article>{{ end }}</div>{{ range slice "Current researchers" "Alumni" "Collaborators" }}<div class="directory-group empty-directory"><h2>{{ . }}</h2><p>Profile pending confirmation.</p></div>{{ end }}</section>
+
+{{ else if eq .Section "demo" }}
+  <section class="content-section"><div class="empty-state prominent"><h2>Research demonstrations will be added after faculty approval.</h2><p>Approved videos, external links, and code resources will appear here when available.</p></div></section>
+
+{{ else if eq .Section "search" }}
+  {{ $items := where site.RegularPages "Section" "in" (slice "publication" "project" "authors" "research" "news") }}
+  <section class="content-section search-page" data-site-search><label class="search-control"><span>Search MultiCOG</span><input type="search" data-site-search-input placeholder="Search publications, projects, people, research, and news" autofocus></label><p class="result-count" data-site-result-count>{{ len $items }} searchable items</p><div class="search-results">{{ range $items }}<article class="search-result filterable" data-search="{{ lower (printf "%s %s %s" .Title .Summary .Section) }}"><p class="pub-year">{{ .Section | humanize }}</p><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p></article>{{ end }}</div><div class="empty-state" data-site-empty hidden><h2>No matching results.</h2><p>Try a different phrase.</p></div></section>
+
+{{ else }}
+  <section class="content-section simple-list">{{ range .Pages.ByWeight }}<article><p class="pub-year">{{ with .Date }}{{ .Format "02 Jan 2006" }}{{ else }}{{ .Params.partner_type }}{{ end }}</p><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>{{ .Params.summary }}</p></article>{{ end }}</section>
+{{ end }}
 {{ end }}

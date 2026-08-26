@@ -18,33 +18,30 @@
       <nav class="nav-shell" aria-label="Primary navigation">
         <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="MultiCOG home">
           <span class="brand-mark" aria-hidden="true">M</span>
-          <span>
-            <strong>MultiCOG</strong>
-            <small>BITS Pilani</small>
-          </span>
+          <span><strong>MultiCOG</strong><small>BITS Pilani</small></span>
         </a>
-        <details class="nav-menu">
+        <div class="nav-links desktop-nav">
+          {{ range .Site.Menus.main }}
+            <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+          {{ end }}
+        </div>
+        <details class="nav-menu mobile-nav">
           <summary class="nav-button">Menu</summary>
           <div class="nav-links">
             {{ range .Site.Menus.main }}
-              <a href="{{ .URL }}">{{ .Name }}</a>
+              <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
             {{ end }}
           </div>
         </details>
       </nav>
     </header>
-    <main id="main">
-      {{ block "main" . }}{{ end }}
-    </main>
+    <p class="site-notice">{{ .Site.Params.placeholder_notice }}</p>
+    <main id="main">{{ block "main" . }}{{ end }}</main>
     <footer class="site-footer">
-      <div>
-        <strong>MultiCOG</strong>
-        <p>Draft research-group website for faculty review. Institutional affiliation: BITS Pilani.</p>
-      </div>
-      <div>
-        <p>Contact placeholder: <a href="mailto:{{ .Site.Params.contact_email }}">{{ .Site.Params.contact_email }}</a></p>
-        <p>All draft placeholders should be replaced only after confirmation.</p>
-      </div>
+      <div><strong>MultiCOG</strong><p>Artificial intelligence research at BITS Pilani.</p></div>
+      <div><a href="/search/">Search the site</a><p><a href="mailto:{{ .Site.Params.contact_email }}">{{ .Site.Params.contact_email }}</a></p></div>
     </footer>
+    {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
+    <script src="{{ $js.RelPermalink }}" defer></script>
   </body>
 </html>

@@ -2,3 +2,5 @@ public/
 resources/
 .hugo_build.lock
 .tools/
+.git
+node_modules

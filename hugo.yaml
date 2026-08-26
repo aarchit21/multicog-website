@@ -8,7 +8,7 @@ params:
   description: "Draft research-group website for MultiCOG at BITS Pilani."
   affiliation: "BITS Pilani"
   contact_email: "pratik.narang@pilani.bits-pilani.ac.in"
-  placeholder_notice: "Draft placeholder - confirm with faculty supervisor."
+  placeholder_notice: "Initial draft - selected content awaits faculty confirmation."
 
 markup:
   goldmark:
@@ -44,3 +44,6 @@ menus:
     - name: "Contact"
       pageRef: "/contact"
       weight: 90
+    - name: "Search"
+      pageRef: "/search"
+      weight: 100

@@ -1,68 +1,32 @@
 {{ define "main" }}
-<article class="single">
-  <header class="single-header">
-    <p class="eyebrow">{{ .Section | humanize }}</p>
-    <h1>{{ .Title }}</h1>
-    {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
-  </header>
-
-  {{ if eq .Section "project" }}
-    <dl class="facts">
-      <div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div>
-      <div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div>
-    </dl>
-    <p class="draft-note">Draft placeholder - project description requires faculty confirmation.</p>
-  {{ end }}
+{{ $slug := .File.ContentBaseName }}
+<article class="detail-page">
+  <header class="detail-header"><p class="kicker">{{ .Section | humanize }}</p><h1>{{ .Title }}</h1>{{ with .Params.summary }}<p>{{ . }}</p>{{ end }}</header>
 
   {{ if eq .Section "publication" }}
-    <div class="figure-placeholder large" role="img" aria-label="Figure placeholder - replace with approved paper figure">
-      <span>Figure placeholder - replace with approved paper figure.</span>
-      <i></i><i></i><i></i>
-    </div>
-    <dl class="facts">
-      <div><dt>Venue</dt><dd>{{ .Params.venue }}</dd></div>
-      <div><dt>Year</dt><dd>{{ .Params.year }}</dd></div>
-      <div><dt>Authors</dt><dd>{{ delimit .Params.authors ", " }}</dd></div>
-      <div><dt>Associated project</dt><dd>{{ .Params.associated_project }}</dd></div>
-    </dl>
-    <div class="button-row" aria-label="Publication assets">
-      <button disabled>Paper placeholder</button>
-      <button disabled>DOI placeholder</button>
-      <button disabled>Code placeholder</button>
-      <button disabled>Dataset placeholder</button>
-      <button disabled>BibTeX placeholder</button>
-      <button disabled>Demo video placeholder</button>
-    </div>
-  {{ end }}
+    {{ $project := site.GetPage (printf "/project/%s" .Params.project) }}
+    <section class="publication-detail"><div class="resource-figure"><span>Representative figure forthcoming</span></div><div class="scholarly-meta"><div><dt>Authors</dt><dd>{{ range $index, $author := .Params.authors }}{{ if $index }}, {{ end }}{{ if $author.slug }}<a href="/authors/{{ $author.slug }}/">{{ $author.name }}</a>{{ else }}{{ $author.name }}{{ end }}{{ end }}</dd></div><div><dt>Venue</dt><dd>{{ .Params.venue }}</dd></div><div><dt>Year</dt><dd>{{ .Params.year }}</dd></div><div><dt>Research areas</dt><dd>{{ range $index, $area := .Params.research_areas }}{{ if $index }}, {{ end }}{{ with site.GetPage (printf "/research/%s" $area) }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}</dd></div><div><dt>Project</dt><dd>{{ with $project }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}Relationship pending confirmation{{ end }}</dd></div></div></section>
+    <section class="detail-body"><h2>Summary</h2>{{ .Content }}<div class="resources-forthcoming"><strong>Resources forthcoming</strong><p>Paper, DOI, code, dataset, citation, and demonstration resources will be added once approved.</p></div></section>
 
-  {{ if eq .Section "authors" }}
-    <div class="profile-layout">
-      <div class="avatar-placeholder large" role="img" aria-label="Portrait placeholder for {{ .Title }}">{{ substr .Title 0 1 }}</div>
-      <dl class="facts">
-        <div><dt>Role</dt><dd>{{ .Params.role }}</dd></div>
-        <div><dt>Research interests</dt><dd>{{ delimit .Params.interests ", " }}</dd></div>
-        <div><dt>Email</dt><dd>{{ with .Params.email }}<a href="mailto:{{ . }}">{{ . }}</a>{{ else }}Placeholder{{ end }}</dd></div>
-        <div><dt>Google Scholar</dt><dd>{{ .Params.google_scholar }}</dd></div>
-        <div><dt>GitHub</dt><dd>{{ .Params.github }}</dd></div>
-        <div><dt>LinkedIn</dt><dd>{{ .Params.linkedin }}</dd></div>
-        <div><dt>Website</dt><dd>{{ .Params.website }}</dd></div>
-      </dl>
-    </div>
-  {{ end }}
+  {{ else if eq .Section "project" }}
+    {{ $papers := where (where site.RegularPages "Section" "publication") "Params.project" $slug }}{{ $people := where (where site.RegularPages "Section" "authors") "File.ContentBaseName" "in" .Params.people }}
+    <dl class="project-meta"><div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div><div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div><div><dt>Research areas</dt><dd>{{ range $index, $area := .Params.research_areas }}{{ if $index }}, {{ end }}{{ with site.GetPage (printf "/research/%s" $area) }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}</dd></div></dl>
+    <section class="detail-body"><p class="provisional">The public project description is provisional pending faculty confirmation.</p><h2>Related publications</h2>{{ if $papers }}<ul class="linked-work">{{ range $papers }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Params.venue }} · {{ .Params.year }}</span></li>{{ end }}</ul>{{ else }}<p>No confirmed related publications are listed yet.</p>{{ end }}<h2>Related people</h2>{{ range $people }}<p><a href="{{ .RelPermalink }}">{{ .Title }}</a> · {{ .Params.role }}</p>{{ end }}<h2>Related demonstrations</h2><p>Research demonstrations will be added after faculty approval.</p></section>
 
-  {{ if eq .Section "demo" }}
-    <div class="video-placeholder" role="img" aria-label="Video thumbnail placeholder">
-      <span>Video thumbnail placeholder</span>
-    </div>
-    <dl class="facts">
-      <div><dt>Associated item</dt><dd>{{ .Params.associated_item }}</dd></div>
-      <div><dt>Video link</dt><dd>Placeholder - add approved YouTube embed or external link.</dd></div>
-      <div><dt>Code link</dt><dd>Placeholder - add approved repository link.</dd></div>
-    </dl>
-  {{ end }}
+  {{ else if eq .Section "authors" }}
+    {{ $projects := where (where site.RegularPages "Section" "project") "Params.people" "intersect" (slice $slug) }}
+    <section class="profile-header"><div class="monogram large" aria-hidden="true">PN</div><div><p>{{ .Params.role }}</p><p>{{ .Params.summary }}</p><a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a></div></section><section class="detail-body"><h2>Research</h2>{{ .Content }}<h2>Related publications</h2><ul class="linked-work">{{ range where site.RegularPages "Section" "publication" }}{{ $isAuthor := false }}{{ range .Params.authors }}{{ if eq .slug $slug }}{{ $isAuthor = true }}{{ end }}{{ end }}{{ if $isAuthor }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Params.venue }} · {{ .Params.year }}</span></li>{{ end }}{{ end }}</ul><h2>Related projects</h2><ul class="linked-work">{{ range $projects }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul></section>
 
-  <div class="content-body">
-    {{ .Content }}
-  </div>
+  {{ else if and (eq .Section "collaboration") (eq $slug "birdeye-ai-lab") }}
+    {{ $papers := where (where site.RegularPages "Section" "publication") "Params.collaboration" $slug }}{{ $project := site.GetPage "/project/sentiment-business-recommendations-llms" }}
+    <section class="collaboration-detail"><div><h2>Research directions</h2><ul class="direction-list"><li>Enterprise feedback analytics</li><li>Suggestion mining</li><li>Cost-efficient LLM inference</li><li>Actionable business recommendations</li></ul></div><div><h2>Connected project</h2><p><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></p><p>Ongoing · {{ $project.Params.duration }}</p></div></section><section class="detail-body"><h2>Connected papers</h2><ul class="linked-work">{{ range $papers }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Params.venue }} · {{ .Params.year }}</span></li>{{ end }}</ul>{{ .Content }}</section>
+
+  {{ else if eq .Section "research" }}
+    {{ $projects := where (where site.RegularPages "Section" "project") "Params.research_areas" "intersect" (slice $slug) }}{{ $papers := where (where site.RegularPages "Section" "publication") "Params.research_areas" "intersect" (slice $slug) }}
+    <section class="detail-body">{{ .Content }}<h2>Related projects</h2><ul class="linked-work">{{ range $projects }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul><h2>Related publications</h2><ul class="linked-work">{{ range $papers }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Params.venue }} · {{ .Params.year }}</span></li>{{ end }}</ul><h2>People & demonstrations</h2><p><a href="/authors/pratik-narang/">Prof. Pratik Narang</a> is the confirmed faculty profile. Research demonstrations will be added after faculty approval.</p></section>
+
+  {{ else }}
+    <section class="detail-body">{{ .Content }}</section>
+  {{ end }}
 </article>
 {{ end }}
