@@ -20,20 +20,30 @@
           <span class="brand-mark" aria-hidden="true">M</span>
           <span><strong>MultiCOG</strong><small>BITS Pilani</small></span>
         </a>
-        <div class="nav-links desktop-nav">
-          {{ range .Site.Menus.main }}
-            <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
-          {{ end }}
-        </div>
-        <details class="nav-menu mobile-nav">
-          <summary class="nav-button">Menu</summary>
+        <div class="desktop-navigation">
           <div class="nav-links">
-            {{ range .Site.Menus.main }}
-              <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
-            {{ end }}
+            {{ range .Site.Menus.main }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
           </div>
-        </details>
+          {{ $moreActive := false }}{{ range .Site.Menus.more }}{{ if $.IsMenuCurrent "more" . }}{{ $moreActive = true }}{{ end }}{{ end }}
+          <div class="more-menu" data-more-menu>
+            <button class="more-toggle" type="button" aria-expanded="false" aria-controls="more-panel" data-more-toggle{{ if $moreActive }} data-current-section="true"{{ end }}>More <span aria-hidden="true"></span></button>
+            <div class="more-panel" id="more-panel" hidden data-more-panel>
+              {{ range .Site.Menus.more }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+            </div>
+          </div>
+          <a class="search-button" href="/search/" aria-label="Search MultiCOG"><span class="search-icon" aria-hidden="true"></span></a>
+        </div>
+        <button class="mobile-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-panel" data-mobile-toggle><span></span><span></span><span></span></button>
       </nav>
+      <div class="mobile-panel" id="mobile-panel" hidden data-mobile-panel>
+        <div class="mobile-panel-inner">
+          <a href="/">Home</a>
+          {{ range .Site.Menus.main }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+          <div class="mobile-divider" aria-hidden="true"></div>
+          {{ range .Site.Menus.more }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+          <a class="mobile-search" href="/search/"><span class="search-icon" aria-hidden="true"></span>Search MultiCOG</a>
+        </div>
+      </div>
     </header>
     <p class="site-notice">{{ .Site.Params.placeholder_notice }}</p>
     <main id="main">{{ block "main" . }}{{ end }}</main>

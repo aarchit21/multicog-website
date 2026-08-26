@@ -2,6 +2,71 @@
   const normalize = (value) => (value || '').toLowerCase().trim();
   const params = new URLSearchParams(window.location.search);
 
+  const moreMenu = document.querySelector('[data-more-menu]');
+  const moreToggle = document.querySelector('[data-more-toggle]');
+  const morePanel = document.querySelector('[data-more-panel]');
+  const mobileToggle = document.querySelector('[data-mobile-toggle]');
+  const mobilePanel = document.querySelector('[data-mobile-panel]');
+  let mobileReturnFocus = false;
+
+  const closeMore = () => {
+    if (!moreToggle || !morePanel) return;
+    moreToggle.setAttribute('aria-expanded', 'false');
+    morePanel.hidden = true;
+  };
+
+  const closeMobile = (returnFocus = false) => {
+    if (!mobileToggle || !mobilePanel || mobilePanel.hidden) return;
+    mobileToggle.setAttribute('aria-expanded', 'false');
+    mobileToggle.setAttribute('aria-label', 'Open navigation');
+    mobilePanel.hidden = true;
+    document.body.classList.remove('menu-open');
+    if (returnFocus || mobileReturnFocus) mobileToggle.focus();
+    mobileReturnFocus = false;
+  };
+
+  moreToggle?.addEventListener('click', () => {
+    const open = moreToggle.getAttribute('aria-expanded') === 'true';
+    moreToggle.setAttribute('aria-expanded', String(!open));
+    morePanel.hidden = open;
+    if (!open) morePanel.querySelector('a')?.focus();
+  });
+
+  mobileToggle?.addEventListener('click', () => {
+    const open = mobileToggle.getAttribute('aria-expanded') === 'true';
+    if (open) {
+      mobileReturnFocus = true;
+      closeMobile(true);
+      return;
+    }
+    closeMore();
+    mobileToggle.setAttribute('aria-expanded', 'true');
+    mobileToggle.setAttribute('aria-label', 'Close navigation');
+    mobilePanel.hidden = false;
+    document.body.classList.add('menu-open');
+    mobilePanel.querySelector('a')?.focus();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (moreMenu && !moreMenu.contains(event.target)) closeMore();
+    if (mobilePanel && !mobilePanel.hidden && !mobilePanel.contains(event.target) && !mobileToggle.contains(event.target)) closeMobile();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (mobilePanel && !mobilePanel.hidden) {
+      mobileReturnFocus = true;
+      closeMobile(true);
+      return;
+    }
+    if (morePanel && !morePanel.hidden) {
+      closeMore();
+      moreToggle?.focus();
+    }
+  });
+
+  mobilePanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMobile()));
+
   const filters = document.querySelector('[data-publication-filters]');
   if (filters) {
     const items = [...document.querySelectorAll('[data-publication-list] .filterable')];
