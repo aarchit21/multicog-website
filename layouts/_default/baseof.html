@@ -31,17 +31,17 @@
               {{ range .Site.Menus.more }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
             </div>
           </div>
-          <a class="search-button" href="/search/" aria-label="Search MultiCOG"><span class="search-icon" aria-hidden="true"></span></a>
+          <a class="search-button" href="{{ (site.GetPage "/search").RelPermalink }}" aria-label="Search MultiCOG"><span class="search-icon" aria-hidden="true"></span></a>
         </div>
         <button class="mobile-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-panel" data-mobile-toggle><span></span><span></span><span></span></button>
       </nav>
       <div class="mobile-panel" id="mobile-panel" hidden data-mobile-panel>
         <div class="mobile-panel-inner">
-          <a href="/">Home</a>
+          <a href="{{ site.Home.RelPermalink }}">Home</a>
           {{ range .Site.Menus.main }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
           <div class="mobile-divider" aria-hidden="true"></div>
           {{ range .Site.Menus.more }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
-          <a class="mobile-search" href="/search/"><span class="search-icon" aria-hidden="true"></span>Search MultiCOG</a>
+          <a class="mobile-search" href="{{ (site.GetPage "/search").RelPermalink }}"><span class="search-icon" aria-hidden="true"></span>Search MultiCOG</a>
         </div>
       </div>
     </header>
@@ -49,7 +49,7 @@
     <main id="main">{{ block "main" . }}{{ end }}</main>
     <footer class="site-footer">
       <div><strong>MultiCOG</strong><p>Artificial intelligence research at BITS Pilani.</p></div>
-      <div><a href="/search/">Search the site</a><p><a href="mailto:{{ .Site.Params.contact_email }}">{{ .Site.Params.contact_email }}</a></p></div>
+      <div><a href="{{ (site.GetPage "/search").RelPermalink }}">Search the site</a><p><a href="mailto:{{ .Site.Params.contact_email }}">{{ .Site.Params.contact_email }}</a></p></div>
     </footer>
     {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
     <script src="{{ $js.RelPermalink }}" defer></script>

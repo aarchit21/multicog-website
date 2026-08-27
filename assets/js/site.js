@@ -7,7 +7,9 @@
   const morePanel = document.querySelector('[data-more-panel]');
   const mobileToggle = document.querySelector('[data-mobile-toggle]');
   const mobilePanel = document.querySelector('[data-mobile-panel]');
+  const mobileBreakpoint = window.matchMedia('(max-width: 1050px)');
   let mobileReturnFocus = false;
+  let mobileScrollY = 0;
 
   const closeMore = () => {
     if (!moreToggle || !morePanel) return;
@@ -21,6 +23,9 @@
     mobileToggle.setAttribute('aria-label', 'Open navigation');
     mobilePanel.hidden = true;
     document.body.classList.remove('menu-open');
+    document.body.style.top = '';
+    document.body.style.position = '';
+    window.scrollTo(0, mobileScrollY);
     if (returnFocus || mobileReturnFocus) mobileToggle.focus();
     mobileReturnFocus = false;
   };
@@ -42,8 +47,11 @@
     closeMore();
     mobileToggle.setAttribute('aria-expanded', 'true');
     mobileToggle.setAttribute('aria-label', 'Close navigation');
+    mobileScrollY = window.scrollY;
     mobilePanel.hidden = false;
     document.body.classList.add('menu-open');
+    document.body.style.top = `-${mobileScrollY}px`;
+    document.body.style.position = 'fixed';
     mobilePanel.querySelector('a')?.focus();
   });
 
@@ -53,6 +61,20 @@
   });
 
   document.addEventListener('keydown', (event) => {
+    if (event.key === 'Tab' && mobilePanel && !mobilePanel.hidden) {
+      const focusable = [...mobilePanel.querySelectorAll('a:not([disabled])')];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+      return;
+    }
     if (event.key !== 'Escape') return;
     if (mobilePanel && !mobilePanel.hidden) {
       mobileReturnFocus = true;
@@ -66,6 +88,9 @@
   });
 
   mobilePanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMobile()));
+  mobileBreakpoint.addEventListener('change', (event) => {
+    if (!event.matches) closeMobile();
+  });
 
   const filters = document.querySelector('[data-publication-filters]');
   if (filters) {
