@@ -1,49 +1,26 @@
 {{ define "main" }}
 {{ $featuredArea := site.GetPage "/research/enterprise-feedback-analytics" }}
-{{ $projects := where site.RegularPages "Section" "project" }}
-{{ $papers := where site.RegularPages "Section" "publication" }}
-{{ $news := where site.RegularPages "Section" "news" }}
+{{ $featuredPaper := site.GetPage "/publication/praxis" }}
+{{ $projects := first 3 (where site.RegularPages "Section" "project").ByWeight }}
+{{ $news := first 1 (where site.RegularPages "Section" "news").ByDate.Reverse }}
 {{ $faculty := site.GetPage "/authors/pratik-narang" }}
-<section class="home-intro">
-  <div>
-    <p class="kicker">Artificial intelligence research group</p>
-    <h1>MultiCOG</h1>
-    <p class="home-lede">Researching practical, rigorous artificial intelligence and machine learning at BITS Pilani.</p>
-  </div>
-  <div class="intro-aside"><span>BITS Pilani</span><p>Research areas, ongoing projects, scholarly work, and collaborations.</p><a class="text-link" href="{{ (site.GetPage "/research").RelPermalink }}">Explore research <span aria-hidden="true">→</span></a></div>
-</section>
+{{ $heroBackground := resources.Get "media/research-lab-background.png" }}
+{{ $feedbackVisual := resources.Get "media/enterprise-feedback-analytics.jpg" }}
+{{ $demoVisual := resources.Get "media/featured-demo-paper.png" }}
+{{ $iotVisual := resources.Get "media/iot-federated-learning.jpg" }}
+{{ $pratikPhoto := resources.Get "media/pratik-narang.jpg" }}
+{{ $memberOnePhoto := resources.Get "media/member-1.jpg" }}
+{{ $memberTwoPhoto := resources.Get "media/member-2.png" }}
 
-<section class="editorial-feature" aria-labelledby="feature-title">
-  <div class="feature-label">Featured research area</div>
-  <div class="feature-copy"><h2 id="feature-title">{{ $featuredArea.Title }}</h2><p>{{ $featuredArea.Params.summary }}</p><a class="text-link" href="{{ $featuredArea.RelPermalink }}">Research area overview <span aria-hidden="true">→</span></a></div>
-  <div class="feature-index" aria-label="Related work"><span>Selected work</span><ol>{{ range first 3 $papers }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ol></div>
-</section>
+<section class="home-hero-refined"{{ with $heroBackground }} style="--home-hero-image:url('{{ .RelPermalink }}')"{{ end }}><div class="home-hero-content"><p class="kicker">Artificial intelligence research group · BITS Pilani</p><h1>MultiCOG</h1><p>Practical, rigorous AI research spanning language, vision, healthcare, cybersecurity, and trustworthy systems.</p><a class="hero-link" href="{{ (site.GetPage "/research").RelPermalink }}">Explore our research <span aria-hidden="true">→</span></a></div></section>
 
-<section class="content-section project-section" aria-labelledby="projects-title">
-  <div class="section-heading"><div><p class="kicker">Ongoing work</p><h2 id="projects-title">Projects</h2></div><a class="text-link" href="{{ (site.GetPage "/project").RelPermalink }}">All projects <span aria-hidden="true">→</span></a></div>
-  <div class="project-list">
-    {{ range $projects.ByWeight }}
-      <article class="project-row"><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>Public description is provisional pending faculty confirmation.</p></div><dl><div><dt>Agency</dt><dd>{{ .Params.agency }}</dd></div><div><dt>Duration</dt><dd>{{ .Params.duration }}</dd></div></dl></article>
-    {{ end }}
-  </div>
-</section>
+<section class="home-section featured-research" aria-labelledby="feature-title"><div class="section-copy"><p class="kicker">Featured research area</p><h2 id="feature-title">{{ $featuredArea.Title }}</h2><p>{{ $featuredArea.Params.summary }}</p><a class="text-link" href="{{ $featuredArea.RelPermalink }}">Research area overview <span aria-hidden="true">→</span></a></div>{{ with $feedbackVisual }}<img src="{{ .RelPermalink }}" alt="Enterprise feedback analytics pipeline transforming text into insights">{{ end }}</section>
 
-<section class="content-section publications-section" aria-labelledby="publications-title">
-  <div class="section-heading"><div><p class="kicker">Selected publications</p><h2 id="publications-title">Recent scholarly work</h2></div><a class="text-link" href="{{ (site.GetPage "/publication").RelPermalink }}">Browse publications <span aria-hidden="true">→</span></a></div>
-  <div class="publication-list compact">
-  {{ range sort $papers "Params.year" "desc" }}
-    <article class="publication-row"><p class="pub-year">{{ .Params.year }}</p><div><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p class="authors">{{ range $index, $author := .Params.authors }}{{ if $index }}, {{ end }}{{ if $author.slug }}{{ with site.GetPage (printf "/authors/%s" $author.slug) }}<a href="{{ .RelPermalink }}">{{ $author.name }}</a>{{ else }}{{ $author.name }}{{ end }}{{ else }}{{ $author.name }}{{ end }}{{ end }}</p><p class="venue">{{ .Params.venue }}</p></div></article>
-  {{ end }}
-  </div>
-</section>
+<section class="home-section demo-paper" aria-labelledby="demo-title">{{ with $demoVisual }}<img src="{{ .RelPermalink }}" alt="Abstract visual representation of language AI research">{{ end }}<div class="section-copy"><p class="kicker">Research spotlight</p><h2 id="demo-title">{{ $featuredPaper.Title }}</h2><p>{{ $featuredPaper.Params.summary }}</p><p class="home-meta">{{ $featuredPaper.Params.venue }} · {{ $featuredPaper.Params.year }}</p><a class="text-link" href="{{ $featuredPaper.RelPermalink }}">View paper details <span aria-hidden="true">→</span></a></div></section>
 
-<section class="birdeye-highlight" aria-labelledby="birdeye-title">
-  <div><p class="kicker">Collaboration</p><h2 id="birdeye-title">BirdEye AI Lab</h2><p>Enterprise feedback analytics, suggestion mining, cost-efficient LLM inference, and actionable business recommendations.</p><a class="text-link" href="{{ (site.GetPage "/collaboration/birdeye-ai-lab").RelPermalink }}">View connected research <span aria-hidden="true">→</span></a></div>
-  <div class="birdeye-papers"><span>Connected papers</span><strong>03</strong><p>Selected publications in the current draft.</p></div>
-</section>
+<section class="home-section home-projects" aria-labelledby="projects-title"><div class="section-heading"><div><p class="kicker">Selected work</p><h2 id="projects-title">Ongoing projects</h2></div><a class="text-link" href="{{ (site.GetPage "/project").RelPermalink }}">All projects <span aria-hidden="true">→</span></a></div><div class="project-preview-grid">{{ range $projects }}<article>{{ if eq .File.ContentBaseName "resilient-iot-federated-learning-generative-ai-security-agents" }}{{ with $iotVisual }}<img src="{{ .RelPermalink }}" alt="Federated learning security architecture">{{ end }}{{ end }}<p class="kicker">{{ .Params.agency }}</p><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Params.duration }}</p></article>{{ end }}</div></section>
 
-<section class="content-section lower-grid">
-  <div><div class="section-heading"><div><p class="kicker">Latest</p><h2>News</h2></div><a class="text-link" href="{{ (site.GetPage "/news").RelPermalink }}">All news <span aria-hidden="true">→</span></a></div>{{ range first 1 $news.ByDate.Reverse }}<article class="news-feature"><p class="pub-year">{{ .Date.Format "02 Jan 2006" }}</p><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Params.summary }}</p></article>{{ end }}</div>
-  <div><div class="section-heading"><div><p class="kicker">People</p><h2>Group</h2></div><a class="text-link" href="{{ (site.GetPage "/authors").RelPermalink }}">Directory <span aria-hidden="true">→</span></a></div><article class="faculty-preview"><div class="monogram" aria-hidden="true">PN</div><div><h3><a href="{{ $faculty.RelPermalink }}">{{ $faculty.Title }}</a></h3><p>{{ $faculty.Params.role }}</p><p>{{ $faculty.Params.summary }}</p></div></article></div>
-</section>
+<section class="home-section home-team" aria-labelledby="team-title"><div class="section-heading"><div><p class="kicker">People</p><h2 id="team-title">Meet the group</h2></div><a class="text-link" href="{{ (site.GetPage "/authors").RelPermalink }}">Full directory <span aria-hidden="true">→</span></a></div><div class="team-preview-grid"><article class="team-lead">{{ with $pratikPhoto }}<img src="{{ .RelPermalink }}" alt="Prof. Pratik Narang">{{ end }}<div><p class="kicker">Supervisor & team lead</p><h3>{{ $faculty.Title }}</h3><p>{{ $faculty.Params.role }}</p><span>AI · Cybersecurity · Vision</span></div></article><article>{{ with $memberOnePhoto }}<img src="{{ .RelPermalink }}" alt="Member 1 placeholder portrait">{{ end }}<h3>Member 1</h3><p>Research member · placeholder</p></article><article>{{ with $memberTwoPhoto }}<img src="{{ .RelPermalink }}" alt="Member 2 placeholder portrait">{{ end }}<h3>Member 2</h3><p>Research member · placeholder</p></article></div></section>
+
+<section class="home-section home-news" aria-labelledby="news-title"><div><p class="kicker">Latest</p><h2 id="news-title">News</h2></div>{{ range $news }}<article><p class="home-meta">{{ .Date.Format "02 Jan 2006" }}</p><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Params.summary }}</p></article>{{ end }}</section>
 {{ end }}

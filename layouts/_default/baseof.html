@@ -14,9 +14,12 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
+    {{ $headerImage := resources.Get "media/hero-lab.jpg" }}
+    <header class="site-header"{{ with $headerImage }} style="--header-image:url('{{ .RelPermalink }}')"{{ end }}>
       <nav class="nav-shell" aria-label="Primary navigation">
+        {{ $bitsLogo := resources.Get "media/bits-pilani-logo.jpg" }}
         <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="MultiCOG home">
+          {{ with $bitsLogo }}<img class="institution-logo" src="{{ .RelPermalink }}" alt="BITS Pilani logo">{{ end }}
           <span class="brand-mark" aria-hidden="true">M</span>
           <span><strong>MultiCOG</strong><small>BITS Pilani</small></span>
         </a>
