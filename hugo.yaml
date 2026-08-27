@@ -8,6 +8,10 @@ params:
   description: "Draft research-group website for MultiCOG at BITS Pilani."
   affiliation: "BITS Pilani"
   contact_email: "pratik.narang@pilani.bits-pilani.ac.in"
+  social:
+    linkedin: ""
+    google_scholar: ""
+    x: ""
   placeholder_notice: "Initial draft - selected content awaits faculty confirmation."
 
 markup:
