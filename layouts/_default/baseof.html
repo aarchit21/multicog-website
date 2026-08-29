@@ -59,6 +59,7 @@
           <svg class="size-6" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="origin-center transition-transform group-data-[state=open]:translate-y-[6px] group-data-[state=open]:rotate-45 motion-reduce:transition-none" d="M4 6h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="transition-opacity group-data-[state=open]:opacity-0 motion-reduce:transition-none" d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="origin-center transition-transform group-data-[state=open]:-translate-y-[6px] group-data-[state=open]:-rotate-45 motion-reduce:transition-none" d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </nav>
+    </header>
 
       <div class="pointer-events-none fixed inset-0 z-50 opacity-0 transition-opacity duration-200 data-[state=open]:pointer-events-auto data-[state=open]:opacity-100 motion-reduce:transition-none min-[1051px]:hidden" id="mobile-panel" data-mobile-panel data-state="closed" aria-hidden="true" inert>
         <div class="absolute inset-0 bg-[#071d35]/55 backdrop-blur-[2px]" data-mobile-backdrop aria-hidden="true"></div>
@@ -74,7 +75,6 @@
           </div>
         </div>
       </div>
-    </header>
 
     <p class="border-b border-[#d7e1e7] bg-[#fff9e9] px-4 py-2 text-center text-[14px] font-semibold leading-5 text-[#6b5522] dark:border-[#594a2c] dark:bg-[#312919] dark:text-[#f5d78e]">{{ .Site.Params.placeholder_notice }}</p>
     <main id="main" tabindex="-1" class="dark:[&_h1]:text-[#f2f8fa] dark:[&_h2]:text-[#f2f8fa] dark:[&_h3]:text-[#e5f0f4] dark:[&_p]:text-[#b8cbd4] dark:[&_a]:text-[#69d9e9] dark:[&_dt]:text-[#a9c0cc] dark:[&_dd]:text-[#e5f0f4] dark:[&_li]:text-[#d6e5eb] dark:[&_section]:border-[#29465d] dark:[&_article]:border-[#29465d] dark:[&_article]:bg-[#0d2234] dark:[&_dl]:border-[#29465d] dark:[&_.prose]:prose-invert dark:[&_.bg-white]:bg-[#10283c] dark:[&_input]:border-[#416176] dark:[&_input]:bg-[#10283c] dark:[&_input]:text-[#f2f8fa] dark:[&_input]:placeholder:text-[#9bb4c1] dark:[&_select]:border-[#416176] dark:[&_select]:bg-[#10283c] dark:[&_select]:text-[#f2f8fa] dark:[&_select]:[color-scheme:dark]">{{ block "main" . }}{{ end }}</main>
