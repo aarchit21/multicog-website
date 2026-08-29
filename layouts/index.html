@@ -7,7 +7,6 @@
 {{ $heroBackground := resources.Get "media/research-lab-background.png" }}
 {{ $feedbackVisual := resources.Get "media/enterprise-feedback-analytics.jpg" }}
 {{ $demoVisual := resources.Get "media/featured-demo-paper.png" }}
-{{ $iotVisual := resources.Get "media/iot-federated-learning.jpg" }}
 {{ $investigationVisual := resources.Get "media/project-investigation.png" }}
 {{ $businessVisual := resources.Get "media/project-business-recommendations.png" }}
 {{ $federatedVisual := resources.Get "media/project-federated-learning.png" }}
@@ -15,15 +14,73 @@
 {{ $memberOnePhoto := resources.Get "media/member-1.jpg" }}
 {{ $memberTwoPhoto := resources.Get "media/member-2.png" }}
 
-<section class="home-hero-refined"{{ with $heroBackground }} style="--home-hero-image:url('{{ .RelPermalink }}')"{{ end }}><div class="home-hero-content"><p class="kicker">Artificial intelligence research group · BITS Pilani</p><h1>MultiCOG</h1><p>Practical, rigorous AI research spanning language, vision, healthcare, cybersecurity, and trustworthy systems.</p><a class="hero-link" href="{{ (site.GetPage "/research").RelPermalink }}">Explore our research <span aria-hidden="true">→</span></a></div></section>
+<section class="relative isolate mx-auto flex min-h-[360px] w-[calc(100%-28px)] max-w-[1120px] items-center overflow-hidden bg-[#071d35] px-6 py-12 text-white sm:min-h-[400px] sm:w-[calc(100%-40px)] sm:px-10 min-[781px]:px-16 min-[781px]:py-16">
+  {{ partial "responsive-image.html" (dict "image" $heroBackground "alt" "MultiCOG research laboratory" "widths" (slice 320 640 960 1280) "sizes" "(min-width: 1120px) 1120px, calc(100vw - 28px)" "class" "absolute inset-0 -z-20 h-full w-full object-cover" "loading" "eager" "fetchpriority" "high") }}
+  <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(7,29,53,0.94)_0%,rgba(7,29,53,0.76)_56%,rgba(7,29,53,0.28)_100%)] max-[780px]:bg-[linear-gradient(rgba(7,29,53,0.84),rgba(7,29,53,0.78))]"></div>
+  <div class="max-w-[610px]">
+    <p class="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#c4eff7] sm:text-[13px]">Artificial intelligence research group · BITS Pilani</p>
+    <h1 class="mt-3 font-serif text-[1.9rem] font-bold leading-[1.05] tracking-[-0.035em] text-white min-[781px]:text-[clamp(1.58rem,2.59vw,2.63rem)]">MultiCOG</h1>
+    <p class="mt-4 max-w-[580px] text-[17px] leading-[1.65] text-white/90 md:text-[19px] md:leading-[1.55]">Practical, rigorous AI research spanning language, vision, healthcare, cybersecurity, and trustworthy systems.</p>
+    <a class="mt-6 inline-flex min-h-11 items-center gap-2 rounded-sm bg-white px-4 py-2.5 text-[16px] font-bold text-[#071d35] no-underline transition-colors hover:bg-[#c4eff7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#44c5d8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#071d35] dark:!text-[#071d35]" href="{{ (site.GetPage "/research").RelPermalink }}">Explore our research <span aria-hidden="true">→</span></a>
+  </div>
+</section>
 
-<section class="home-section featured-research" aria-labelledby="feature-title"><div class="section-copy"><p class="kicker">Featured research area</p><h2 id="feature-title">{{ $featuredArea.Title }}</h2><p>{{ $featuredArea.Params.summary }}</p><a class="text-link" href="{{ $featuredArea.RelPermalink }}">Research area overview <span aria-hidden="true">→</span></a></div>{{ with $feedbackVisual }}<img src="{{ .RelPermalink }}" alt="Enterprise feedback analytics pipeline transforming text into insights">{{ end }}</section>
+<section class="mx-auto grid w-[calc(100%-28px)] max-w-[1120px] gap-7 border-b border-[#d7e1e7] py-12 sm:w-[calc(100%-40px)] min-[781px]:grid-cols-2 min-[781px]:items-center min-[781px]:gap-12 min-[781px]:py-16 dark:border-[#29465d]" aria-labelledby="feature-title">
+  <div>
+    <p class="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#1266a8] sm:text-[13px]">Featured research area</p>
+    <h2 class="mt-2 font-serif text-[1.225rem] font-bold leading-[1.2] tracking-[-0.025em] text-[#071d35] min-[781px]:text-[clamp(1.02rem,1.54vw,1.54rem)]" id="feature-title">{{ $featuredArea.Title }}</h2>
+    <p class="mt-4 max-w-[64ch] text-[#52687a]">{{ $featuredArea.Params.summary }}</p>
+    <a class="mt-4 inline-flex min-h-11 items-center gap-2 font-bold text-[#1266a8] underline decoration-[#44c5d8] decoration-2 underline-offset-4 hover:text-[#071d35] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8]" href="{{ $featuredArea.RelPermalink }}">Research area overview <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="overflow-hidden rounded-sm bg-[#e8f1f4]">
+    {{ partial "responsive-image.html" (dict "image" $feedbackVisual "alt" "Enterprise feedback analytics pipeline transforming text into insights" "widths" (slice 320 640 960) "sizes" "(min-width: 781px) 536px, calc(100vw - 28px)" "class" "aspect-[16/10] w-full object-cover" "loading" "eager") }}
+  </div>
+</section>
 
-<section class="home-section demo-paper" aria-labelledby="demo-title">{{ with $demoVisual }}<img src="{{ .RelPermalink }}" alt="Abstract visual representation of language AI research">{{ end }}<div class="section-copy"><p class="kicker">Research spotlight</p><h2 id="demo-title">{{ $featuredPaper.Title }}</h2><p>{{ $featuredPaper.Params.summary }}</p><p class="home-meta">{{ $featuredPaper.Params.venue }} · {{ $featuredPaper.Params.year }}</p><a class="text-link" href="{{ $featuredPaper.RelPermalink }}">View paper details <span aria-hidden="true">→</span></a></div></section>
+<section class="mx-auto grid w-[calc(100%-28px)] max-w-[1120px] gap-7 border-b border-[#d7e1e7] py-12 sm:w-[calc(100%-40px)] min-[781px]:grid-cols-[0.85fr_1.15fr] min-[781px]:items-center min-[781px]:gap-12 min-[781px]:py-16" aria-labelledby="demo-title">
+  <div class="order-2 overflow-hidden rounded-sm bg-[#e8f1f4] min-[781px]:order-none">
+    {{ partial "responsive-image.html" (dict "image" $demoVisual "alt" "Abstract visual representation of language AI research" "widths" (slice 320 640 960) "sizes" "(min-width: 781px) 455px, calc(100vw - 28px)" "class" "aspect-[16/10] w-full object-cover") }}
+  </div>
+  <div>
+    <p class="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#1266a8] sm:text-[13px]">Research spotlight</p>
+    <h2 class="mt-2 font-serif text-[1.225rem] font-bold leading-[1.2] tracking-[-0.025em] text-[#071d35] min-[781px]:text-[clamp(1.02rem,1.54vw,1.54rem)]" id="demo-title">{{ $featuredPaper.Title }}</h2>
+    <p class="mt-4 max-w-[64ch] text-[#52687a]">{{ $featuredPaper.Params.summary }}</p>
+    <p class="mt-3 text-[14px] font-semibold text-[#52687a] md:text-[15px]">{{ $featuredPaper.Params.venue }} · {{ $featuredPaper.Params.year }}</p>
+    <a class="mt-4 inline-flex min-h-11 items-center gap-2 font-bold text-[#1266a8] underline decoration-[#44c5d8] decoration-2 underline-offset-4 hover:text-[#071d35] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8]" href="{{ $featuredPaper.RelPermalink }}">View paper details <span aria-hidden="true">→</span></a>
+  </div>
+</section>
 
-<section class="home-section home-projects" aria-labelledby="projects-title"><div class="section-heading"><div><p class="kicker">Selected work</p><h2 id="projects-title">Ongoing projects</h2></div><a class="text-link" href="{{ (site.GetPage "/project").RelPermalink }}">All projects <span aria-hidden="true">→</span></a></div><div class="project-preview-grid">{{ range $projects }}{{ $visual := $investigationVisual }}{{ if eq .File.ContentBaseName "sentiment-business-recommendations-llms" }}{{ $visual = $businessVisual }}{{ else if eq .File.ContentBaseName "resilient-iot-federated-learning-generative-ai-security-agents" }}{{ $visual = $federatedVisual }}{{ end }}<a class="project-preview-card" href="{{ .RelPermalink }}"{{ with $visual }} style="--project-image:url('{{ .RelPermalink }}')"{{ end }}><span class="project-preview-overlay"><span class="kicker">{{ .Params.agency }}</span><strong>{{ .Title }}</strong><small>{{ .Params.duration }}</small><span class="project-card-action">View project <span aria-hidden="true">→</span></span></span></a>{{ end }}</div></section>
+<section class="mx-auto w-[calc(100%-28px)] max-w-[1120px] border-b border-[#d7e1e7] py-12 sm:w-[calc(100%-40px)] min-[781px]:py-16" aria-labelledby="projects-title">
+  <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div><p class="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#1266a8] sm:text-[13px]">Selected work</p><h2 class="mt-2 font-serif text-[1.225rem] font-bold leading-[1.2] tracking-[-0.025em] text-[#071d35] min-[781px]:text-[clamp(1.02rem,1.54vw,1.54rem)]" id="projects-title">Ongoing projects</h2></div>
+    <a class="inline-flex min-h-11 items-center gap-2 self-start font-bold text-[#1266a8] underline decoration-[#44c5d8] decoration-2 underline-offset-4 hover:text-[#071d35] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] sm:self-auto" href="{{ (site.GetPage "/project").RelPermalink }}">All projects <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="grid gap-5 min-[781px]:grid-cols-3">
+    {{ range $projects }}
+      {{ $visual := $investigationVisual }}{{ if eq .File.ContentBaseName "sentiment-business-recommendations-llms" }}{{ $visual = $businessVisual }}{{ else if eq .File.ContentBaseName "resilient-iot-federated-learning-generative-ai-security-agents" }}{{ $visual = $federatedVisual }}{{ end }}
+      <a class="group relative flex min-h-[245px] overflow-hidden rounded-sm bg-[#071d35] text-white no-underline outline-white outline-offset-[-5px] focus-visible:outline-2 dark:!text-white" href="{{ .RelPermalink }}">
+        {{ partial "responsive-image.html" (dict "image" $visual "alt" "" "widths" (slice 320 640) "sizes" "(min-width: 781px) 352px, calc(100vw - 28px)" "class" "absolute inset-0 z-0 h-full w-full object-cover") }}
+        <span class="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(7,29,53,0.18),rgba(7,29,53,0.88))] transition-[background] duration-[180ms] ease-out group-hover:bg-[linear-gradient(180deg,rgba(7,29,53,0.08),rgba(7,29,53,0.72))] group-focus-visible:bg-[linear-gradient(180deg,rgba(7,29,53,0.08),rgba(7,29,53,0.72))] motion-reduce:transition-none" aria-hidden="true"></span>
+        <span class="relative z-20 flex min-h-[245px] w-full flex-col justify-end p-[1.3rem]"><span class="text-[12px] font-extrabold uppercase tracking-[0.15em] text-[#c4eff7]">{{ .Params.agency }}</span><h3 class="mt-2 font-serif text-[21.6px] font-bold leading-[1.25] text-white min-[781px]:text-[18px]">{{ .Title }}</h3><span class="mt-[0.55rem] block text-[14px] text-[#e2edf2]">{{ .Params.duration }}</span><span class="mt-0 inline-flex max-h-0 translate-y-1 items-center gap-2 overflow-hidden text-[14px] font-extrabold opacity-0 transition-[max-height,margin,opacity,transform] duration-[180ms] ease-out group-hover:mt-[0.8rem] group-hover:max-h-8 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:mt-[0.8rem] group-focus-visible:max-h-8 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none">View project <span aria-hidden="true">→</span></span></span>
+      </a>
+    {{ end }}
+  </div>
+</section>
 
-<section class="home-section home-team" aria-labelledby="team-title"><div class="section-heading"><div><p class="kicker">People</p><h2 id="team-title">Meet the group</h2></div><a class="text-link" href="{{ (site.GetPage "/authors").RelPermalink }}">Full directory <span aria-hidden="true">→</span></a></div><div class="team-preview-grid"><article class="team-lead">{{ with $pratikPhoto }}<img src="{{ .RelPermalink }}" alt="Prof. Pratik Narang">{{ end }}<div><p class="kicker">Supervisor & team lead</p><h3>{{ $faculty.Title }}</h3><p>{{ $faculty.Params.role }}</p><span>AI · Cybersecurity · Vision</span></div></article><article>{{ with $memberOnePhoto }}<img src="{{ .RelPermalink }}" alt="Member 1 placeholder portrait">{{ end }}<h3>Member 1</h3><p>Research member · placeholder</p></article><article>{{ with $memberTwoPhoto }}<img src="{{ .RelPermalink }}" alt="Member 2 placeholder portrait">{{ end }}<h3>Member 2</h3><p>Research member · placeholder</p></article></div></section>
+<section class="mx-auto w-[calc(100%-28px)] max-w-[1120px] border-b border-[#d7e1e7] py-12 sm:w-[calc(100%-40px)] min-[781px]:py-16" aria-labelledby="team-title">
+  <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><p class="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#1266a8] sm:text-[13px]">People</p><h2 class="mt-2 font-serif text-[1.225rem] font-bold leading-[1.2] tracking-[-0.025em] text-[#071d35] min-[781px]:text-[clamp(1.02rem,1.54vw,1.54rem)]" id="team-title">Meet the group</h2></div><a class="inline-flex min-h-11 items-center gap-2 self-start font-bold text-[#1266a8] underline decoration-[#44c5d8] decoration-2 underline-offset-4 hover:text-[#071d35] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] sm:self-auto" href="{{ (site.GetPage "/authors").RelPermalink }}">Full directory <span aria-hidden="true">→</span></a></div>
+  <div class="grid gap-5 min-[781px]:grid-cols-[1.4fr_1fr_1fr]">
+    <article class="grid grid-cols-[82px_1fr] items-center gap-4 border border-[#d7e1e7] bg-[#f3f8f9] p-4 sm:grid-cols-[98px_1fr]">
+      {{ partial "responsive-image.html" (dict "image" $pratikPhoto "alt" "Prof. Pratik Narang" "widths" (slice 96 192) "sizes" "98px" "class" "aspect-square w-[82px] rounded-full object-cover sm:w-[98px]") }}
+      <div><p class="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#1266a8]">Supervisor & team lead</p><h3 class="mt-1 font-serif text-[22px] font-bold leading-tight text-[#071d35] min-[781px]:text-[18px]">{{ $faculty.Title }}</h3><p class="mt-1 text-[15px] text-[#52687a]">{{ $faculty.Params.role }}</p><span class="mt-2 block text-[13px] font-bold text-[#1266a8]">AI · Cybersecurity · Vision</span></div>
+    </article>
+    <article class="border border-[#d7e1e7] bg-white p-4">{{ partial "responsive-image.html" (dict "image" $memberOnePhoto "alt" "Member 1 placeholder portrait" "widths" (slice 96 192) "sizes" "78px" "class" "mb-3 aspect-square w-[78px] rounded-full object-cover") }}<h3 class="font-serif text-[22px] font-bold leading-tight text-[#071d35] min-[781px]:text-[18px]">Member 1</h3><p class="mt-1 text-[15px] text-[#52687a]">Research member · placeholder</p></article>
+    <article class="border border-[#d7e1e7] bg-white p-4">{{ partial "responsive-image.html" (dict "image" $memberTwoPhoto "alt" "Member 2 placeholder portrait" "widths" (slice 96 192) "sizes" "78px" "class" "mb-3 aspect-square w-[78px] rounded-full object-cover") }}<h3 class="font-serif text-[22px] font-bold leading-tight text-[#071d35] min-[781px]:text-[18px]">Member 2</h3><p class="mt-1 text-[15px] text-[#52687a]">Research member · placeholder</p></article>
+  </div>
+</section>
 
-<section class="home-section home-news" aria-labelledby="news-title"><div><p class="kicker">Latest</p><h2 id="news-title">News</h2></div>{{ range $news }}<article><p class="home-meta">{{ .Date.Format "02 Jan 2006" }}</p><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Params.summary }}</p></article>{{ end }}</section>
+<section class="mx-auto grid w-[calc(100%-28px)] max-w-[1120px] gap-7 border-t border-[#d7e1e7] py-12 sm:w-[calc(100%-40px)] min-[781px]:grid-cols-[0.45fr_1fr] min-[781px]:gap-12 min-[781px]:py-16" aria-labelledby="news-title">
+  <div><p class="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#1266a8] sm:text-[13px]">Latest</p><h2 class="mt-2 font-serif text-[1.225rem] font-bold leading-[1.2] tracking-[-0.025em] text-[#071d35] min-[781px]:text-[clamp(1.02rem,1.54vw,1.54rem)]" id="news-title">News</h2></div>
+  {{ range $news }}<article class="border-l-2 border-[#44c5d8] pl-5"><p class="text-[14px] font-semibold text-[#52687a] md:text-[15px]">{{ .Date.Format "02 Jan 2006" }}</p><h3 class="mt-1 font-serif text-[25px] font-bold leading-[1.25] text-[#071d35] min-[781px]:text-[20px]"><a class="underline decoration-transparent decoration-2 underline-offset-4 transition-colors hover:text-[#1266a8] hover:decoration-[#44c5d8] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8]" href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p class="mt-3 max-w-[68ch] text-[#52687a]">{{ .Params.summary }}</p></article>{{ end }}
+</section>
 {{ end }}

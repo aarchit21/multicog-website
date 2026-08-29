@@ -4,31 +4,45 @@ This repository contains the first dummy draft of a static research-group websit
 
 ## Local Development
 
-Install Hugo Extended, then run:
+Install Hugo Extended and Node.js, then install the pinned Tailwind dependencies:
 
 ```powershell
+npm ci
+npm run build:css
 hugo server
 ```
 
-In this workspace, a portable Hugo binary was used:
+For live CSS changes, run `npm run watch:css` alongside `hugo server`.
+
+In this workspace, the ignored portable Node and Hugo binaries can be used:
 
 ```powershell
+$taskNodeDir = (Resolve-Path .\.tools\node).Path
+$env:Path = "$taskNodeDir;$env:Path"
+npm ci
+npm run build:css
 .\.tools\hugo\hugo.exe server
 ```
 
 ## Production Build
 
 ```powershell
+npm ci
+npm run build:css
 hugo --minify
 ```
 
 Portable workspace command:
 
 ```powershell
+$taskNodeDir = (Resolve-Path .\.tools\node).Path
+$env:Path = "$taskNodeDir;$env:Path"
+npm ci
+npm run build:css
 .\.tools\hugo\hugo.exe --minify
 ```
 
-The generated static site is written to `public/`.
+Tailwind scans all Hugo layouts, Markdown content, and site JavaScript, then writes an ignored intermediate file at `assets/css/tailwind.generated.css`. Hugo fingerprints that compiled, purged stylesheet and writes the static site to `public/`.
 
 ## Add A Publication
 

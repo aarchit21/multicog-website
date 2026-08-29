@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ .Site.Language.Locale | default "en" }}">
+<html class="scroll-smooth motion-reduce:scroll-auto" lang="{{ .Site.Language.Locale | default "en" }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,53 +8,89 @@
     <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
     <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ .Permalink }}">
     <meta name="twitter:card" content="summary">
-    {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+    <link rel="canonical" href="{{ .Permalink }}">
+    {{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .RelPermalink }}">{{ end }}
+    <script>!function(){try{if(localStorage.getItem("multicog-theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}}();</script>
+    {{ $css := resources.Get "css/tailwind.generated.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
   </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+  <body class="min-h-screen overflow-x-hidden bg-[#fbfaf7] font-sans text-[16px] leading-[1.68] text-[#24384b] antialiased selection:bg-[#44c5d8]/35 selection:text-[#071d35] dark:bg-[#081827] dark:text-[#d6e5eb] dark:selection:text-white md:text-[17px]">
+    <a class="fixed left-4 top-3 z-[100] -translate-y-20 rounded-sm bg-white px-4 py-3 font-bold text-[#071d35] shadow-[0_8px_30px_rgba(7,29,53,0.2)] transition-transform focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-[#1266a8] focus:ring-offset-2 motion-reduce:transition-none dark:bg-[#10283c] dark:text-[#f2f8fa] dark:focus:ring-[#44c5d8] dark:focus:ring-offset-[#081827]" href="#main">Skip to content</a>
+
     {{ $headerImage := resources.Get "media/hero-lab.jpg" }}
-    <header class="site-header"{{ with $headerImage }} style="--header-image:url('{{ .RelPermalink }}')"{{ end }}>
-      <nav class="nav-shell" aria-label="Primary navigation">
+    <header class="sticky top-0 z-40 isolate border-b border-[#d7e1e7] bg-[#fbfaf7]/95 shadow-[0_1px_0_rgba(7,29,53,0.04)] backdrop-blur-md dark:border-[#29465d] dark:bg-[#081827]/95 dark:shadow-[0_1px_0_rgba(0,0,0,0.28)]">
+      <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        {{ partial "responsive-image.html" (dict "image" $headerImage "alt" "" "widths" (slice 320 640 960) "sizes" "100vw" "class" "h-full w-full object-cover opacity-[0.10]" "loading" "eager") }}
+        <div class="absolute inset-0 bg-[#fbfaf7]/80 dark:bg-[#081827]/85"></div>
+      </div>
+      <nav class="mx-auto flex min-h-[76px] w-full max-w-[1180px] items-center justify-between gap-4 px-4 sm:px-6" aria-label="Primary navigation">
         {{ $bitsLogo := resources.Get "media/bits-pilani-logo.jpg" }}
-        <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="MultiCOG home">
-          {{ with $bitsLogo }}<img class="institution-logo" src="{{ .RelPermalink }}" alt="BITS Pilani logo">{{ end }}
-          <span class="brand-mark" aria-hidden="true">M</span>
-          <span><strong>MultiCOG</strong><small>BITS Pilani</small></span>
+        <a class="flex min-h-11 shrink-0 items-center gap-2.5 rounded-sm text-[#071d35] no-underline outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#1266a8] focus-visible:ring-offset-4 focus-visible:ring-offset-[#fbfaf7] dark:text-[#f2f8fa] dark:focus-visible:ring-[#44c5d8] dark:focus-visible:ring-offset-[#081827]" href="{{ site.Home.RelPermalink }}" aria-label="MultiCOG home">
+          {{ partial "responsive-image.html" (dict "image" $bitsLogo "alt" "BITS Pilani logo" "widths" (slice 50 100) "sizes" "50px" "class" "h-10 w-auto max-w-[50px] object-contain sm:h-11 sm:max-w-[55px]" "loading" "eager") }}
+          <span class="grid size-9 shrink-0 place-items-center rounded-full bg-[#071d35] font-serif text-[19px] font-bold text-white" aria-hidden="true">M</span>
+          <span class="leading-tight"><strong class="block text-[18px] tracking-[-0.01em]">MultiCOG</strong><small class="block text-[12px] font-semibold uppercase tracking-[0.13em] text-[#52687a] dark:text-[#a9c0cc]">BITS Pilani</small></span>
         </a>
-        <div class="desktop-navigation">
-          <div class="nav-links">
-            {{ range .Site.Menus.main }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+
+        <div class="hidden items-center gap-1 min-[1051px]:flex">
+          <div class="flex items-center">
+            {{ range .Site.Menus.main }}
+              <a class="flex min-h-11 items-center border-b-2 border-transparent px-3 text-[15px] font-semibold text-[#24384b] no-underline transition-colors hover:border-[#44c5d8] hover:text-[#071d35] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] aria-[current=page]:border-[#1266a8] aria-[current=page]:text-[#071d35] dark:text-[#c8d9e0] dark:hover:text-white dark:focus-visible:ring-[#44c5d8] dark:aria-[current=page]:border-[#44c5d8] dark:aria-[current=page]:text-white" href="{{ .Page.RelPermalink }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+            {{ end }}
           </div>
           {{ $moreActive := false }}{{ range .Site.Menus.more }}{{ if $.IsMenuCurrent "more" . }}{{ $moreActive = true }}{{ end }}{{ end }}
-          <div class="more-menu" data-more-menu>
-            <button class="more-toggle" type="button" aria-expanded="false" aria-controls="more-panel" data-more-toggle{{ if $moreActive }} data-current-section="true"{{ end }}>More <span aria-hidden="true"></span></button>
-            <div class="more-panel" id="more-panel" hidden data-more-panel>
-              {{ range .Site.Menus.more }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+          <div class="relative" data-more-menu>
+            <button class="group flex min-h-11 items-center gap-1.5 border-b-2 border-transparent px-3 text-[15px] font-semibold text-[#24384b] transition-colors hover:border-[#44c5d8] hover:text-[#071d35] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] data-[current-section=true]:border-[#1266a8] data-[current-section=true]:text-[#071d35] dark:text-[#c8d9e0] dark:hover:text-white dark:focus-visible:ring-[#44c5d8] dark:data-[current-section=true]:border-[#44c5d8] dark:data-[current-section=true]:text-white" type="button" aria-expanded="false" aria-controls="more-panel" data-more-toggle{{ if $moreActive }} data-current-section="true"{{ end }}>
+              More
+              <svg class="size-4 transition-transform group-aria-expanded:rotate-180 motion-reduce:transition-none" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="absolute right-0 top-[calc(100%+0.5rem)] z-50 min-w-48 rounded-sm border border-[#d7e1e7] bg-white p-2 shadow-[0_16px_40px_rgba(7,29,53,0.16)] dark:border-[#29465d] dark:bg-[#10283c] dark:shadow-[0_16px_40px_rgba(0,0,0,0.32)]" id="more-panel" hidden data-more-panel>
+              {{ range .Site.Menus.more }}<a class="flex min-h-11 items-center rounded-sm px-3 py-2 text-[15px] font-semibold text-[#24384b] no-underline hover:bg-[#edf7f8] hover:text-[#071d35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] aria-[current=page]:bg-[#edf7f8] aria-[current=page]:text-[#071d35] dark:text-[#d6e5eb] dark:hover:bg-[#173b56] dark:hover:text-white dark:focus-visible:ring-[#44c5d8] dark:aria-[current=page]:bg-[#173b56] dark:aria-[current=page]:text-white" href="{{ .Page.RelPermalink }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
             </div>
           </div>
-          <a class="search-button" href="{{ (site.GetPage "/search").RelPermalink }}" aria-label="Search MultiCOG"><span class="search-icon" aria-hidden="true"></span></a>
+          <a class="ml-1 grid size-11 place-items-center rounded-full text-[#071d35] no-underline transition-colors hover:bg-[#e8f5f7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] dark:text-[#e5f0f4] dark:hover:bg-[#173b56] dark:focus-visible:ring-[#44c5d8]" href="{{ (site.GetPage "/search").RelPermalink }}" aria-label="Search MultiCOG">
+            <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          {{ partial "theme-toggle.html" . }}
         </div>
-        <button class="mobile-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-panel" data-mobile-toggle><span></span><span></span><span></span></button>
+
+        <button class="group grid size-11 shrink-0 place-items-center rounded-sm text-[#071d35] transition-colors hover:bg-[#e8f5f7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] dark:text-[#e5f0f4] dark:hover:bg-[#173b56] dark:focus-visible:ring-[#44c5d8] min-[1051px]:hidden" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-panel" data-mobile-toggle data-state="closed">
+          <svg class="size-6" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="origin-center transition-transform group-data-[state=open]:translate-y-[6px] group-data-[state=open]:rotate-45 motion-reduce:transition-none" d="M4 6h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="transition-opacity group-data-[state=open]:opacity-0 motion-reduce:transition-none" d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="origin-center transition-transform group-data-[state=open]:-translate-y-[6px] group-data-[state=open]:-rotate-45 motion-reduce:transition-none" d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
       </nav>
-      <div class="mobile-panel" id="mobile-panel" hidden data-mobile-panel>
-        <div class="mobile-panel-inner">
-          <a href="{{ site.Home.RelPermalink }}">Home</a>
-          {{ range .Site.Menus.main }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
-          <div class="mobile-divider" aria-hidden="true"></div>
-          {{ range .Site.Menus.more }}<a href="{{ .URL }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
-          <a class="mobile-search" href="{{ (site.GetPage "/search").RelPermalink }}"><span class="search-icon" aria-hidden="true"></span>Search MultiCOG</a>
+
+      <div class="pointer-events-none fixed inset-0 z-50 opacity-0 transition-opacity duration-200 data-[state=open]:pointer-events-auto data-[state=open]:opacity-100 motion-reduce:transition-none min-[1051px]:hidden" id="mobile-panel" data-mobile-panel data-state="closed" aria-hidden="true" inert>
+        <div class="absolute inset-0 bg-[#071d35]/55 backdrop-blur-[2px]" data-mobile-backdrop aria-hidden="true"></div>
+        <div class="absolute inset-y-0 right-0 flex w-[min(88vw,380px)] translate-x-full flex-col bg-[#fbfaf7] shadow-[-18px_0_55px_rgba(7,29,53,0.24)] transition-transform duration-200 data-[state=open]:translate-x-0 motion-reduce:transition-none dark:bg-[#10283c] dark:shadow-[-18px_0_55px_rgba(0,0,0,0.4)]" data-mobile-drawer data-state="closed" role="dialog" aria-modal="true" aria-label="Site navigation">
+          <div class="flex min-h-[76px] items-center justify-between border-b border-[#d7e1e7] px-5 dark:border-[#29465d]"><strong class="text-[18px] text-[#071d35] dark:text-[#f2f8fa]">Navigation</strong><button class="grid size-11 place-items-center rounded-sm text-[#071d35] hover:bg-[#e8f5f7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] dark:text-[#e5f0f4] dark:hover:bg-[#173b56] dark:focus-visible:ring-[#44c5d8]" type="button" aria-label="Close navigation" data-mobile-close><svg class="size-6" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 5 14 14M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+          <div class="flex flex-1 flex-col overflow-y-auto px-5 py-5">
+            <a class="flex min-h-11 items-center border-b border-[#d7e1e7] px-2 py-2 text-[17px] font-semibold text-[#071d35] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] dark:border-[#29465d] dark:text-[#f2f8fa] dark:focus-visible:ring-[#44c5d8]" href="{{ site.Home.RelPermalink }}">Home</a>
+            {{ range .Site.Menus.main }}<a class="flex min-h-11 items-center border-b border-[#d7e1e7] px-2 py-2 text-[17px] font-semibold text-[#071d35] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] aria-[current=page]:border-l-4 aria-[current=page]:border-l-[#1266a8] aria-[current=page]:bg-[#edf7f8] aria-[current=page]:pl-3 dark:border-[#29465d] dark:text-[#f2f8fa] dark:focus-visible:ring-[#44c5d8] dark:aria-[current=page]:border-l-[#44c5d8] dark:aria-[current=page]:bg-[#173b56]" href="{{ .Page.RelPermalink }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+            <p class="mb-1 mt-6 px-2 text-[12px] font-bold uppercase tracking-[0.16em] text-[#52687a] dark:text-[#a9c0cc]">More</p>
+            {{ range .Site.Menus.more }}<a class="flex min-h-11 items-center border-b border-[#d7e1e7] px-2 py-2 text-[17px] font-semibold text-[#071d35] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1266a8] aria-[current=page]:border-l-4 aria-[current=page]:border-l-[#1266a8] aria-[current=page]:bg-[#edf7f8] aria-[current=page]:pl-3 dark:border-[#29465d] dark:text-[#f2f8fa] dark:focus-visible:ring-[#44c5d8] dark:aria-[current=page]:border-l-[#44c5d8] dark:aria-[current=page]:bg-[#173b56]" href="{{ .Page.RelPermalink }}"{{ if $.IsMenuCurrent "more" . }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+            <div class="mt-6 flex items-center justify-between border-t border-[#d7e1e7] pt-4 dark:border-[#29465d]"><span class="text-[15px] font-bold text-[#24384b] dark:text-[#d6e5eb]">Colour theme</span>{{ partial "theme-toggle.html" . }}</div>
+            <a class="mt-4 flex min-h-11 items-center gap-3 rounded-sm bg-[#071d35] px-4 py-2.5 text-[17px] font-bold text-white no-underline hover:bg-[#1266a8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#44c5d8] focus-visible:ring-offset-2 dark:bg-[#173b56] dark:hover:bg-[#1266a8] dark:focus-visible:ring-offset-[#10283c]" href="{{ (site.GetPage "/search").RelPermalink }}"><svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search MultiCOG</a>
+          </div>
         </div>
       </div>
     </header>
-    <p class="site-notice">{{ .Site.Params.placeholder_notice }}</p>
-    <main id="main">{{ block "main" . }}{{ end }}</main>
-    <footer class="site-footer">
-      <div><strong>MultiCOG</strong><p>Artificial intelligence research at BITS Pilani.</p></div>
-      <div class="footer-social" aria-label="Contact and social links"><a class="social-link" href="mailto:{{ .Site.Params.contact_email }}" aria-label="Email MultiCOG" data-tooltip="Email"><span aria-hidden="true">✉</span></a>{{ with .Site.Params.social.linkedin }}<a class="social-link" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" data-tooltip="LinkedIn"><span aria-hidden="true">in</span></a>{{ else }}<span class="social-link social-link-disabled" aria-label="LinkedIn link coming soon" data-tooltip="LinkedIn coming soon"><span aria-hidden="true">in</span></span>{{ end }}{{ with .Site.Params.social.google_scholar }}<a class="social-link scholar-icon" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" data-tooltip="Google Scholar"><span aria-hidden="true">G</span></a>{{ else }}<span class="social-link scholar-icon social-link-disabled" aria-label="Google Scholar link coming soon" data-tooltip="Google Scholar coming soon"><span aria-hidden="true">G</span></span>{{ end }}{{ with .Site.Params.social.x }}<a class="social-link x-icon" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="X" data-tooltip="X"><span aria-hidden="true">𝕏</span></a>{{ else }}<span class="social-link x-icon social-link-disabled" aria-label="X link coming soon" data-tooltip="X coming soon"><span aria-hidden="true">𝕏</span></span>{{ end }}</div>
+
+    <p class="border-b border-[#d7e1e7] bg-[#fff9e9] px-4 py-2 text-center text-[14px] font-semibold leading-5 text-[#6b5522] dark:border-[#594a2c] dark:bg-[#312919] dark:text-[#f5d78e]">{{ .Site.Params.placeholder_notice }}</p>
+    <main id="main" tabindex="-1" class="dark:[&_h1]:text-[#f2f8fa] dark:[&_h2]:text-[#f2f8fa] dark:[&_h3]:text-[#e5f0f4] dark:[&_p]:text-[#b8cbd4] dark:[&_a]:text-[#69d9e9] dark:[&_dt]:text-[#a9c0cc] dark:[&_dd]:text-[#e5f0f4] dark:[&_li]:text-[#d6e5eb] dark:[&_section]:border-[#29465d] dark:[&_article]:border-[#29465d] dark:[&_article]:bg-[#0d2234] dark:[&_dl]:border-[#29465d] dark:[&_.prose]:prose-invert dark:[&_.bg-white]:bg-[#10283c] dark:[&_input]:border-[#416176] dark:[&_input]:bg-[#10283c] dark:[&_input]:text-[#f2f8fa] dark:[&_input]:placeholder:text-[#9bb4c1] dark:[&_select]:border-[#416176] dark:[&_select]:bg-[#10283c] dark:[&_select]:text-[#f2f8fa] dark:[&_select]:[color-scheme:dark]">{{ block "main" . }}{{ end }}</main>
+
+    <footer class="mt-20 bg-[#071d35] text-[#d7e8ef] dark:bg-[#050e17]">
+      <div class="mx-auto flex w-full max-w-[1180px] flex-col gap-8 px-5 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div><strong class="font-serif text-[22px] text-white">MultiCOG</strong><p class="mt-1 text-[15px] leading-6">Artificial intelligence research at BITS Pilani.</p></div>
+        <div class="flex items-center gap-2.5" aria-label="Contact and social links">
+          <a class="group relative grid size-11 place-items-center rounded-full border border-[#d7e8ef]/45 text-[17px] font-bold text-white no-underline transition-transform hover:-translate-y-0.5 hover:bg-white hover:text-[#071d35] focus-visible:-translate-y-0.5 focus-visible:bg-white focus-visible:text-[#071d35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#44c5d8] motion-reduce:transition-none" href="mailto:{{ .Site.Params.contact_email }}" aria-label="Email MultiCOG"><span aria-hidden="true">✉</span><span class="pointer-events-none absolute bottom-[calc(100%+0.5rem)] left-1/2 w-max max-w-40 -translate-x-1/2 translate-y-1 rounded-sm bg-white px-2 py-1 text-[12px] font-bold text-[#071d35] opacity-0 shadow-md transition group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none">Email</span></a>
+          {{ with .Site.Params.social.linkedin }}<a class="grid size-11 place-items-center rounded-full border border-[#d7e8ef]/45 text-[15px] font-bold text-white no-underline hover:bg-white hover:text-[#071d35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#44c5d8]" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>{{ else }}<span class="grid size-11 cursor-not-allowed place-items-center rounded-full border border-[#d7e8ef]/30 text-[15px] font-bold text-white/60" aria-label="LinkedIn link coming soon">in</span>{{ end }}
+          {{ with .Site.Params.social.google_scholar }}<a class="grid size-11 place-items-center rounded-full border border-[#d7e8ef]/45 font-serif text-[17px] font-bold text-white no-underline hover:bg-white hover:text-[#071d35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#44c5d8]" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">G</a>{{ else }}<span class="grid size-11 cursor-not-allowed place-items-center rounded-full border border-[#d7e8ef]/30 font-serif text-[17px] font-bold text-white/60" aria-label="Google Scholar link coming soon">G</span>{{ end }}
+          {{ with .Site.Params.social.x }}<a class="grid size-11 place-items-center rounded-full border border-[#d7e8ef]/45 text-[17px] font-bold text-white no-underline hover:bg-white hover:text-[#071d35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#44c5d8]" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="X">𝕏</a>{{ else }}<span class="grid size-11 cursor-not-allowed place-items-center rounded-full border border-[#d7e8ef]/30 text-[17px] font-bold text-white/60" aria-label="X link coming soon">𝕏</span>{{ end }}
+        </div>
+      </div>
     </footer>
     {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
-    <script src="{{ $js.RelPermalink }}" defer></script>
+    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
   </body>
 </html>

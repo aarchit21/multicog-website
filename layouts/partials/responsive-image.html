@@ -1,0 +1,35 @@
+{{- $image := .image -}}
+{{- if $image -}}
+  {{- $alt := .alt | default "" -}}
+  {{- $class := .class | default "block h-auto w-full" -}}
+  {{- $sizes := .sizes | default "100vw" -}}
+  {{- $widths := .widths | default (slice 320 640 960 1280) -}}
+  {{- $loading := .loading | default "lazy" -}}
+  {{- $fetchpriority := .fetchpriority | default "auto" -}}
+  {{- $variants := slice -}}
+  {{- range $widths -}}
+    {{- if le . $image.Width -}}
+      {{- $variants = $variants | append ($image.Resize (printf "%dx webp q82" .)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if eq (len $variants) 0 -}}
+    {{- $variants = $variants | append ($image.Resize (printf "%dx webp q82" $image.Width)) -}}
+  {{- end -}}
+  {{- $fallback := index $variants (sub (len $variants) 1) -}}
+  {{- $sources := slice -}}
+  {{- range $variants -}}
+    {{- $sources = $sources | append (printf "%s %dw" .RelPermalink .Width) -}}
+  {{- end -}}
+  <img
+    class="{{ $class }}"
+    src="{{ $fallback.RelPermalink }}"
+    srcset="{{ delimit $sources ", " }}"
+    sizes="{{ $sizes }}"
+    width="{{ $image.Width }}"
+    height="{{ $image.Height }}"
+    alt="{{ $alt }}"
+    loading="{{ $loading }}"
+    decoding="async"
+    fetchpriority="{{ $fetchpriority }}"
+  >
+{{- end -}}

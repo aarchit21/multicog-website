@@ -7,27 +7,70 @@
   const morePanel = document.querySelector('[data-more-panel]');
   const mobileToggle = document.querySelector('[data-mobile-toggle]');
   const mobilePanel = document.querySelector('[data-mobile-panel]');
+  const mobileDrawer = document.querySelector('[data-mobile-drawer]');
+  const mobileClose = document.querySelector('[data-mobile-close]');
+  const mobileBackdrop = document.querySelector('[data-mobile-backdrop]');
   const mobileBreakpoint = window.matchMedia('(max-width: 1050px)');
-  let mobileReturnFocus = false;
-  let mobileScrollY = 0;
+  const themeToggles = [...document.querySelectorAll('[data-theme-toggle]')];
+  const themeStorageKey = 'multicog-theme';
 
-  const closeMore = () => {
-    if (!moreToggle || !morePanel) return;
-    moreToggle.setAttribute('aria-expanded', 'false');
-    morePanel.hidden = true;
+  const getTheme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  const setTheme = (theme, persist = false) => {
+    const nextTheme = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = nextTheme;
+    themeToggles.forEach((toggle) => {
+      const label = nextTheme === 'dark' ? 'Activate light theme' : 'Activate dark theme';
+      toggle.setAttribute('aria-label', label);
+      toggle.setAttribute('title', label);
+    });
+    if (persist) {
+      try {
+        localStorage.setItem(themeStorageKey, nextTheme);
+      } catch (_) {
+        // A blocked storage area should not prevent theme switching.
+      }
+    }
   };
 
-  const closeMobile = (returnFocus = false) => {
-    if (!mobileToggle || !mobilePanel || mobilePanel.hidden) return;
-    mobileToggle.setAttribute('aria-expanded', 'false');
-    mobileToggle.setAttribute('aria-label', 'Open navigation');
-    mobilePanel.hidden = true;
-    document.body.classList.remove('menu-open');
-    document.body.style.top = '';
-    document.body.style.position = '';
-    window.scrollTo(0, mobileScrollY);
-    if (returnFocus || mobileReturnFocus) mobileToggle.focus();
-    mobileReturnFocus = false;
+  setTheme(getTheme());
+  themeToggles.forEach((toggle) => toggle.addEventListener('click', () => {
+    setTheme(getTheme() === 'dark' ? 'light' : 'dark', true);
+  }));
+
+  const closeMore = (returnFocus = false) => {
+    if (!moreToggle || !morePanel) return;
+    const wasOpen = moreToggle.getAttribute('aria-expanded') === 'true';
+    moreToggle.setAttribute('aria-expanded', 'false');
+    morePanel.hidden = true;
+    if (returnFocus && wasOpen) moreToggle.focus();
+  };
+
+  const mobileIsOpen = () => mobilePanel?.dataset.state === 'open';
+
+  const setMobileState = (open, returnFocus = false) => {
+    if (!mobileToggle || !mobilePanel || !mobileDrawer) return;
+    const wasOpen = mobileIsOpen();
+    mobileToggle.setAttribute('aria-expanded', String(open));
+    mobileToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    mobileToggle.dataset.state = open ? 'open' : 'closed';
+    mobilePanel.dataset.state = open ? 'open' : 'closed';
+    mobilePanel.setAttribute('aria-hidden', String(!open));
+    mobilePanel.toggleAttribute('inert', !open);
+    mobileDrawer.dataset.state = open ? 'open' : 'closed';
+    document.documentElement.classList.toggle('overflow-hidden', open);
+    document.body.classList.toggle('overflow-hidden', open);
+    if (open) {
+      window.requestAnimationFrame(() => mobileClose?.focus());
+    } else if (returnFocus && wasOpen) {
+      mobileToggle.focus();
+    }
+  };
+
+  const closeMobile = (returnFocus = false) => setMobileState(false, returnFocus);
+  const openMobile = () => {
+    if (!mobileBreakpoint.matches) return;
+    closeMore();
+    setMobileState(true);
   };
 
   moreToggle?.addEventListener('click', () => {
@@ -38,31 +81,19 @@
   });
 
   mobileToggle?.addEventListener('click', () => {
-    const open = mobileToggle.getAttribute('aria-expanded') === 'true';
-    if (open) {
-      mobileReturnFocus = true;
-      closeMobile(true);
-      return;
-    }
-    closeMore();
-    mobileToggle.setAttribute('aria-expanded', 'true');
-    mobileToggle.setAttribute('aria-label', 'Close navigation');
-    mobileScrollY = window.scrollY;
-    mobilePanel.hidden = false;
-    document.body.classList.add('menu-open');
-    document.body.style.top = `-${mobileScrollY}px`;
-    document.body.style.position = 'fixed';
-    mobilePanel.querySelector('a')?.focus();
+    if (mobileIsOpen()) closeMobile(true);
+    else openMobile();
   });
+  mobileClose?.addEventListener('click', () => closeMobile(true));
+  mobileBackdrop?.addEventListener('click', () => closeMobile(true));
 
   document.addEventListener('click', (event) => {
     if (moreMenu && !moreMenu.contains(event.target)) closeMore();
-    if (mobilePanel && !mobilePanel.hidden && !mobilePanel.contains(event.target) && !mobileToggle.contains(event.target)) closeMobile();
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Tab' && mobilePanel && !mobilePanel.hidden) {
-      const focusable = [...mobilePanel.querySelectorAll('a:not([disabled])')];
+    if (event.key === 'Tab' && mobileIsOpen()) {
+      const focusable = [...mobilePanel.querySelectorAll('a[href], button:not([disabled])')];
       if (!focusable.length) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -76,15 +107,11 @@
       return;
     }
     if (event.key !== 'Escape') return;
-    if (mobilePanel && !mobilePanel.hidden) {
-      mobileReturnFocus = true;
+    if (mobileIsOpen()) {
       closeMobile(true);
       return;
     }
-    if (morePanel && !morePanel.hidden) {
-      closeMore();
-      moreToggle?.focus();
-    }
+    if (morePanel && !morePanel.hidden) closeMore(true);
   });
 
   mobilePanel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMobile()));
@@ -94,11 +121,13 @@
 
   const filters = document.querySelector('[data-publication-filters]');
   if (filters) {
-    const items = [...document.querySelectorAll('[data-publication-list] .filterable')];
+    const publications = document.querySelector('[data-publications]');
+    const items = [...document.querySelectorAll('[data-publication-list] [data-filterable]')];
     const years = [...document.querySelectorAll('[data-publication-year]')];
     const count = document.querySelector('[data-result-count]');
     const empty = document.querySelector('[data-empty-state]');
     const view = document.querySelector('[data-view-toggle]');
+
     [...filters.elements].forEach((control) => {
       if (control.name && params.has(control.name)) control.value = params.get(control.name);
     });
@@ -112,22 +141,32 @@
       const author = normalize(form.get('author'));
       let visible = 0;
       items.forEach((item) => {
-        const matches = (!q || item.dataset.search.includes(q)) && (!year || item.dataset.year === year) && (!venue || item.dataset.venue === venue) && (!area || item.dataset.area.split(' ').includes(area)) && (!author || item.dataset.author.toLowerCase().includes(author));
+        const matches = (!q || item.dataset.search.includes(q))
+          && (!year || item.dataset.year === year)
+          && (!venue || item.dataset.venue === venue)
+          && (!area || item.dataset.area.split(' ').includes(area))
+          && (!author || normalize(item.dataset.author).includes(author));
         item.hidden = !matches;
         if (matches) visible += 1;
       });
-      years.forEach((section) => section.hidden = ![...section.querySelectorAll('.filterable')].some((item) => !item.hidden));
+      years.forEach((section) => {
+        section.hidden = ![...section.querySelectorAll('[data-filterable]')].some((item) => !item.hidden);
+      });
       count.textContent = `${visible} publication${visible === 1 ? '' : 's'}`;
       empty.hidden = visible !== 0;
       const next = new URLSearchParams();
-      [...filters.elements].forEach((control) => { if (control.name && control.value) next.set(control.name, control.value); });
+      [...filters.elements].forEach((control) => {
+        if (control.name && control.value) next.set(control.name, control.value);
+      });
       history.replaceState(null, '', `${location.pathname}${next.size ? `?${next}` : ''}`);
     };
+
     filters.addEventListener('input', update);
     filters.addEventListener('change', update);
     update();
     view?.addEventListener('click', () => {
-      const visual = document.documentElement.classList.toggle('publication-visual-view');
+      const visual = publications.dataset.view !== 'visual';
+      publications.dataset.view = visual ? 'visual' : 'list';
       view.setAttribute('aria-pressed', String(visual));
       view.textContent = visual ? 'List view' : 'Visual view';
     });
@@ -136,16 +175,25 @@
   const siteSearch = document.querySelector('[data-site-search]');
   if (siteSearch) {
     const input = siteSearch.querySelector('[data-site-search-input]');
-    const items = [...siteSearch.querySelectorAll('.filterable')];
+    const items = [...siteSearch.querySelectorAll('[data-filterable]')];
     const count = siteSearch.querySelector('[data-site-result-count]');
     const empty = siteSearch.querySelector('[data-site-empty]');
+    if (params.has('q')) input.value = params.get('q');
     const update = () => {
       const term = normalize(input.value);
       let visible = 0;
-      items.forEach((item) => { const show = !term || item.dataset.search.includes(term); item.hidden = !show; if (show) visible += 1; });
+      items.forEach((item) => {
+        const show = !term || item.dataset.search.includes(term);
+        item.hidden = !show;
+        if (show) visible += 1;
+      });
       count.textContent = `${visible} result${visible === 1 ? '' : 's'}`;
       empty.hidden = visible !== 0;
+      const next = new URLSearchParams();
+      if (input.value.trim()) next.set('q', input.value.trim());
+      history.replaceState(null, '', `${location.pathname}${next.size ? `?${next}` : ''}`);
     };
     input.addEventListener('input', update);
+    update();
   }
 })();
